@@ -7,6 +7,8 @@
 use strict;
 use File::Path qw(make_path rmtree);
 
+if ($> != 0 ) { die "[!] you must run this as root!\n"; }
+
 sub banner {
 
 	print '[]===========================================================[]'."\n";
