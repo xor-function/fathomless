@@ -66,7 +66,7 @@ sub set_type {
 	print "[*] Avaliable Script formats...\n\n";
 	print "[1]-> vbscript\n";
 	print "[2]-> vba macro  [EXPERIMENTAL! Macros will a large code size may fail.]\n";
-	print "[3]-> hta script\n\n";
+	print "[3]-> hta [vbscript]\n\n";
 
 	while (1) {
 		print "[*] Select the option number for the type of code you wish to generate.\n";
