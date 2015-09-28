@@ -73,19 +73,13 @@ sub set_type {
 		$type = <STDIN>;
 		chomp($type);
 
-                while ( $type !~ /[0-9]/g ) {
-                        print "[!] Thats not a number! Try again.\n";
-                        $type = <STDIN>;
-                        chomp($type);
-                }
-
 		while (1) {
 
 			if ( $type eq '1' ) { last; }
 			if ( $type eq '2' ) { last; }
 			if ( $type eq '3' ) { last; }
 			else { 
-				print "[!] Thats not on the list! Try again.\n";
+				print "[!] That's not an avaliable option! Try again.\n";
 				$type = <STDIN>;
 				chomp($type);
 			}
