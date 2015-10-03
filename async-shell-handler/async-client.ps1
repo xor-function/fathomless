@@ -68,7 +68,10 @@ function set-sysname {
         $mac = $rawmac -replace "\W", '-'
 
         $name = $env:computername
-        $sysname = $name + "-" + $mac
+						    # Example date Feb 7 at 9:32:05 pm 
+	$regtime = get-date -uformat "%m%d%H%M%S"   # The time format is [month 02 | day 07 | hour 21 | minute 32 | second 05] [0207213205]
+
+        $sysname = $name + "-" + $mac + "-" + $regtime
 
 	return $sysname
 }
