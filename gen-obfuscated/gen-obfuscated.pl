@@ -65,7 +65,7 @@ sub set_type {
 
 	print "[*] Avaliable Script formats...\n\n";
 	print "[1]-> vbscript\n";
-	print "[2]-> vba macro  [EXPERIMENTAL! Macros will a large code size may fail.]\n";
+	print "[2]-> vba macro  [EXPERIMENTAL! Macros with a large code size may fail.]\n";
 	print "[3]-> hta [vbscript]\n\n";
 
 	while (1) {
