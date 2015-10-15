@@ -135,7 +135,7 @@ function proc-loop {
 				} else { $sendback = 'The windows ftp client is not supported in async mode' } 
 
 				# prep output to be uploaded.         	
-				$encstdout = base64url-encode $sendback2
+				$encstdout = base64url-encode $sendback
 
 				# Check base64 encoded string length and trim it if too close to url character limit, allow room.
 				if ( $encstdout.length -gt 65000 ) { 
