@@ -1,0 +1,33 @@
+BOOT 2 OWN
+                                                                                  
+The people behind the following code/projects                                     
+made this possible:                                                               
+                                                                                  
+ Crunchbang Linux Developers
+ crunchbang.org                                                  
+                                                                                  
+ creddump : http://code.google.com/p/creddump                                     
+ Author: Brendan Dolan-Gavitt (bdolangavitt@wesleyan.edu)                                                                                         
+                                                                                  
+ winexe : http://sourceforge.net/users/ahajda                                     
+ Author: Ahajda                                                                                                               
+                                                                                  
+ smbclient/winexe Hash Passing patch:                                           
+ JoMo-kun http://www.foofus.net/~jmk/passhash.html                             
+ Patch updated for Samba 3.6.12 by exfil (Emilio Escobar)                         
+                                                                                  
+ smbwinexe : https://github.com/pentestgeek/smbexec                               
+ Authors: Eric Milam (Brav0Hax) & Martin Bos (Purehate)                                                                                           
+                                                                                  
+ Invoke-Shellcode : https://github.com/mattifestation/PowerSploit                 
+ Author: Matthew Graeber (@mattifestation)                                                                                                  
+                                                                                  
+ Invoke-Mimikatz : https://github.com/mattifestation/PowerSploit                  
+ Author: Joe Bialek, Twitter: @JosephBialek                                       
+ Mimikatz Author: Benjamin DELPY (gentilkiwi). Blog: http://blog.gentilkiwi.com.  
+                                                                                  
+ smart_migrate.rb : Metasploit Framework post exploitation module
+ Author: thelightcosine
+
+ The Metasploit Framework Developers for meterpreter shell multihandlers          
+ www.metaploit.com  
