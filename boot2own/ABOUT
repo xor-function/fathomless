@@ -1,0 +1,180 @@
+The gist of this code.
+
+SUMMARY
+B2O is a toolkit that generates a live OS from a crunchbang iso. From this live 
+environment attacks are performed on the HDD to gain NTLM hashes to leverage in 
+additional attacks against a network. 
+
+Used crunchbang-11-20130506-i686.iso successfully to
+generate liveCD.
+
+Used Ubuntu Server x86 12.04 successfully to compile patched winexe
+So use Ubuntu Server/Desktop x86 12.04 to compile binary for i686 
+crunchbang iso.
+
+Tested only on Hard drive with Windows 7 installed
+
+
+SHELL SCRIPTS:
+
+b2o-compile.sh 
+compiles the patch winexe binaries that allow
+hash passing
+
+b2o-isogen.sh 
+uses a crunchbang iso to generate a remastered
+iso live OS (B2O) with the automated attack tools.
+
+b2o-pxe.sh
+Creates a pxe server that serves the remastered
+B2O live OS.
+
+b2o-listener.sh 
+starts a meterpreter listener with the configured
+options to msfconsole, use with option 3 in the 
+B2O live OS.
+ 
+ (Requires Metaspliot to be installed along with
+  system_migrate.rb)
+
+b2o-autopwn.sh 
+Attack engine, this script only runs in the 
+live OS environment and provides a terminal 
+menu with automated attack options.
+
+
+LIVE OS:
+
+The live OS chosen is CrunchBang Linux (I like it)
+The live filesystem is a squashfs filesystem.
+To remaster/mod it install squashfs-tools and genisoimage.
+To make a live USB use Unetbootin as the dd method fails.
+
+The expanded filesystem.squashfs was mounted an chrooted into
+to install the following packages:
+
+arp-scan
+lighttpd
+
+The core files that make the B2O live environment:
+
+/root/
+  │
+  └─ boot-2-own/
+        ├── b2o-autopwn.sh
+        ├── creddump/
+        │   ├── cachedump.py
+        │   ├── CHANGELOG
+        │   ├── COPYING
+        │   ├── framework
+        │   ├── lsadump.py
+        │   ├── pwdump.py
+        │   └── README
+        ├── CREDITS-B2O
+        └── pwinexe
+ /var/  
+   │
+   └─www/
+       ├── pld2
+       └── pld3
+       
+A terminator shell is loaded on boot by modding (/etc/skel/.config/openbox/autostart)
+
+the following line was appended to the autostart file:
+----------------------------------------------------------------------------------------
+terminator --geometry=750x600 -e 'sudo /bin/bash -c /root/boot-2-own/b2o-autopwn.sh' &
+----------------------------------------------------------------------------------------
+
+Once B2O is booted up on a domain computer it b2o-autopwn.sh automatically 
+mounts the hard drive and then reads the local hashes using 
+creddump (written by Brendan Dolan-Gavitt). 
+
+Booting a live OS on a computer can be done by a USB device but a more promising method 
+is PXE. This is practical as it is simple to make an arm SoC (beagle bone/Rasp Pi) 
+serve B2O over PXE. Also there is no need to leave any physical media attached 
+to the used PC after the OS is loaded into RAM. Once booted it singles out the 
+local administration user name and it's corresponding NTLM hash and imports 
+these as variables.
+
+Winexe is the one of the only programs that enable cli interaction with 
+Windows computers from Linux. Unlike Psexec it does not pass hashes I used the 
+samba-hashpass.patch from the smbexec project (Eric Milam & Martin Bos) 
+and created a custom build/compile script to create a patched winexe binary 
+(rename to pwinexe to prevent confusion). 
+
+Now the user and hash variables can then be passed to a function using pwinexe for 
+additional machine access.
+
+The patched winexe also has the option to run as SYSTEM along with 
+the option to uninstall itself from the machine upon command completion.
+
+
+
+POST EXPLOITATION
+
+Once the Local admin username and hash are retrieved b2o-autopwn.sh
+it acquires the ip address of other computers in the LAN using arp-scan.
+
+Once this is done you are presented with payload options for pwinexe.
+
+I chose powershell as the attacks can be completely in memory. This makes forensics 
+and IR quite difficult especially since the attack platform itself is in memory (boot disk/PXE). 
+
+This seems to be the least likely method to be caught by AV solutions. Although to reduce
+the chance of detection further one can try obfuscation, base64 encoding after 
+adding unused random variables into the command string.
+
+The PS payloads used in B2O are Invoke-Mimikatz (written by Joe Bialek) and 
+Invoke-Shellcode (written by Matthew Graeber) both are part of PowerSploit. More details 
+about theses scripts are located in the credits.
+
+To use these payloads without writing to disk, they must not be copied over prior to
+use. To insure the powershell payloads are only run in memory I employed a lighttpd 
+webserver to host the payloads. Now they can be retrieved and copied to an expression 
+or variable in memory before execution.
+
+The Auto-Off option:
+This is an optional feature that powers off the live OS Session after a selected payload
+finishes performing an execution run on the detected IP's in the LAN. This can be 
+useful as one can turn off the monitor then leave and let the live OS session power 
+itself off after it finishes it's run.
+
+Invoke-Mimikatz
+reflectively loads Mimikatz in memory using powershell allowing 
+the ability to acquire plain text passwords the results are copied to the file 
+
+  /root/loot  in the B2O live file system
+
+To rsync/http-put-get through tor/i2p/etc.. this file to an external server just append 
+the necessary code before the while loop ends at the bottom of b2o-autopwn.sh. 
+
+Invoke-Shellcode 
+makes it possible to have reverse system shells connect to 
+the specified IP or domain. 
+
+It depends on MSF windows/meterpreter/reverse_https 
+shell multi handler. 
+
+It also depends on a modified version of smart_migrate, a Metasploit manage module. 
+The modified module is named system_migrate.rb and is included in the folder.
+
+It's priority is to migrate out of powershell to an existing NT AUTHORITY/ SYSTEM 
+process to maintain this permissions level. If it is not able to migrate out of
+powershell the patched winexe process will hang as powershell remains active.
+
+
+
+CAVEATS 
+All of the following parameters must exist for success.
+
+The victim network IT Department uses the local administrator user account on domain computers. 
+There is no hard disk encryption being used on the selected workstation. 
+Their workstations boot to PXE OR their BIOS is unlocked.
+
+
+
+
+
+
+xor-function
+nightowlconsulting.com
