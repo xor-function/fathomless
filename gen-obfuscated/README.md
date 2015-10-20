@@ -14,7 +14,7 @@ Change the ip/port values before attempting to use it.
 
 Generated Output of an obfuscated command string:
 
-![generated output](http://www.nightowlconsulting.com/wp-content/uploads/2015/08/GO-IMG-1.png)
+![generated output](http://www.nightowlconsulting.com/pics/string-obfuscation-1.png)
 
 
 ### UPDATE
