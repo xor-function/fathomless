@@ -11,6 +11,10 @@ Currently supported methods.
 * vba macros
 * hta
 
+#### boot2own
+
+more to come...
+
 For more details browse to each folder.
 
 ##### Use only with permission from network owners (make sure it's in writing). 
