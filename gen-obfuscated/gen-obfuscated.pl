@@ -59,11 +59,11 @@ sub set_type {
 	my $type;
 	my $opt;
 	
-        print "[===========================================================================]\n";
-        print "[                              gen-obfuscated                               ]\n";
-        print "[===========================================================================]\n";
+        print "[]===========================================================================[]\n";
+        print "[]                              gen-obfuscated                               []\n";
+        print "[]===========================================================================[]\n";
 
-	print "[*] Avaliable Script formats...\n\n";
+	print "[] Avaliable Script formats...\n\n";
 	print "[1]-> vbscript\n";
 	print "[2]-> vba macro  [EXPERIMENTAL! Macros with a large code size may fail.]\n";
 	print "[3]-> hta [vbscript]\n\n";
