@@ -1,7 +1,7 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 
 Files: b2o-compile.sh, b2o-remaster.sh, b2o-autopwn.sh, b2o-pxe.sh, b2o-listener.sh
-Copyright: 2014 Jonathan D Gonzalez
+Copyright: 2014 xor-function
 License: BSD-3-clause
 
 boot2own is provided under the 3-clause BSD license provided at the end of this file.
