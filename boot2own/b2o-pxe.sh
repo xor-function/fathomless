@@ -6,7 +6,7 @@
 # boot2own-1.0 creates rapid automated attacks that takes
 # advantage of unauthorized physical access to Windows workstations.
 #
-# copyright (C) 2014 Jonathan D. Gonzalez
+# copyright (C) 2014 xor-function
 # license BSD-3
 #
 #--------------------------------------------------------------------
