@@ -1,9 +1,8 @@
-function Mcatz
+function Invoke-Mimikatz
 {
 <#
 .SYNOPSIS
 
-It's really Mimikatz -> string sigs are :|
 This script leverages Mimikatz 2.0 and Invoke-ReflectivePEInjection to reflectively load Mimikatz completely in memory. This allows you to do things such as
 dump credentials without ever writing the mimikatz binary to disk. 
 The script has a ComputerName parameter which allows it to be executed against multiple computers.

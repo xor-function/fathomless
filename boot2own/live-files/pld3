@@ -1,4 +1,4 @@
-function Invoke-SC
+function Invoke-Shellcode
 {
 <#
 .SYNOPSIS
