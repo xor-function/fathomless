@@ -16,7 +16,7 @@ crunchbang iso.
 
 Confirmed working on Windows 7 only.
 
-### TODO 
+### todo
 * Add Plop boot manager to PXE generation script.
 * have Ramboot/Copy2ram functionality to generated iso, to aid live USB function.
 * Add additonal payloads
@@ -73,7 +73,7 @@ This will remaster the crunchbang iso to become the b2o live OS.
 the iso will be saved to boot2own/b2o-remaster/boot2own.iso
 
 
-## PXE Server
+### PXE Server
 sets up a pxe server on a Beagle Bone black, 
 Raspberry Pi or any hardware that has a Debian based OS.
 The script installs syslinux, dnsmasq and configures it to run 
@@ -91,7 +91,7 @@ Default network settings in b2o-pxe.sh
 eth0    10.0.0.1
 netmask 255.255.255.0
 
-# Live Environment Options
+## Live Environment Options
 
 Tested on hard drives with Windows 7 installed. 
 * If the hard drive is encrypted B2O will fail. 
@@ -100,7 +100,7 @@ Tested on hard drives with Windows 7 installed.
 Boot computer by USB/CD/PXE
 You will then be presented with the following options.
 
-## [1] Sethc Backdoor
+### [1] Sethc Backdoor
 This option overwrites sethc.exe with cmd.exe, 
 known as the sticky keys bypass. This enables one to 
 activate a system cmd prompt when pressing the Shift 
@@ -108,7 +108,7 @@ keys 5 times at the Windows login screen. To reverse
 the process just run this option again on the same 
 computer.
 
-## [2] Mimikatz
+### [2] Mimikatz
 Option named after the program Mimikatz. It is delivered 
 using a PowerShell script "Invoke-Mimikatz" (part of the 
 PowerSploit toolkit) that loads the program reflectively 
@@ -118,7 +118,7 @@ boot2own/live-files/pld2, also visit the program authors
 blog and the Github repo that host PowerSploit(read ABOUT CREDITS-B2O). 
 The Output from this option is stored in a file [ /root/loot ] 
 
-## [3] Invoke-Shellcode
+### [3] Invoke-Shellcode
 A script that is apart of PowerSploit toolkit, executes 
 a reverse https meterpreter shell back to the specified IP 
 or domain. For this to work you will need to use the 
@@ -175,7 +175,7 @@ you will not get your shell and may possibly hang up
 a B2O execution run.
 
 
-## [4] PS URL
+### [4] PS URL
 This option passes a powershell command string that downloads 
 the contents of a target url to a powershell variable and 
 then invokes the variable contents as an expression "IEX". 
@@ -184,17 +184,17 @@ that you wish to be executed remotely there is no need to
 enable remoting as you are passing the parameters 
 through the patched winexe program.
 
-## [5] Windows cli
+### [5] Windows cli
 This option passes a command that is executed directly by 
 winexe on victim machines, this option is whatever you make it.
 
-## [6] Show Credits
+### [6] Show Credits
 Shows Credits
 
-## [7] Shut Down Live session
+### [7] Shut Down Live session
 Self explanitory
 
-## EXFILTRATION
+## exfil
 
 For the payload options [ 2 - 5 ]
 the output/result of each successful execution run is saved in a file
