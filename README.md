@@ -1,7 +1,7 @@
 # fathomless
 
 #### async-shell-handler
-Provides a prototype C&C server with asychronous client.
+Provides a prototype C&C server along with an asychronous client, and a basic command interface.
 
 #### gen-obfuscated
 Provides methods of executing client on systems.
