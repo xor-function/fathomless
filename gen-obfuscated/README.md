@@ -8,9 +8,8 @@ To set the options you will need to edit the .pl file directly this is not just 
 simple program with preset payloads. It's designed to take in any
 type of one-liner you can think of passing to "cmd.exe /c".
 
-Some of the examples included deal with powershell, also included is powershell 
-rvs-sh file originally from the nishang toolkit by Nikhil "SamratAshok" Mittal.
-Change the ip/port values before attempting to use it.
+Made to be used along with the async-client powershell script, but any one-liner
+that get's you a shell should work.
 
 Generated Output of an obfuscated command string:
 
