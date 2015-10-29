@@ -133,8 +133,8 @@ sub proc_cmds {
 
 	# Test for stability
 	if ( $cmd_string =~ /exit/i ) {
-		print '[*] Waiting for client to receive exit command...' . "\n";
-		sleep(5);
+		print '[*] Waiting 20 secs for client to receive exit command...' . "\n";
+		sleep(20);
 		rmtree($client_path);
 		# Return "no". Automatically returns shell to selection menu.
 		return 'no';
