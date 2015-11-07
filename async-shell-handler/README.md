@@ -77,3 +77,5 @@ Mode                LastWriteTime     Length Name
 -a---         9/17/2015   6:58 PM      11376 test-self-signed-iex.docx                                                        
 ```
 Created to be used along with gen-obfuscated
+
+For more info http://nightowlconsulting.com/asynchronous-shell-handler/
