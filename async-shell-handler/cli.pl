@@ -18,10 +18,10 @@ sub banner {
 
 }
 
-# main dir is /var/systems/
+# host dir is now /var/async-shell/systems/
 sub gen_hosts {
 
-	my $hosts_dir = '/var/systems/';
+	my $hosts_dir = '/var/async-shell/systems/';
 	my @contents = grep -d, <$hosts_dir*>;
 	
 	return @contents;
@@ -33,7 +33,7 @@ sub list_hosts {
 	my @hosts = @_;
 	my @systems;
 	foreach (@hosts) {
-		my ($root, $var, $sys, $host) = split '/', $_;
+		my ($root, $var, $main, $sys, $host) = split '/', $_;
 		push @systems, $host; 
 	}
 
@@ -128,7 +128,7 @@ sub proc_cmds {
 	my $chkmod  = (stat($stdout))[9];
 	
 	open (my $fh, '+>', "$command" );
-		print $fh "$cmd_string\n";
+		print $fh $cmd_string;
 	close $fh;
 
 	# Test for stability
