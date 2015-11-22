@@ -87,8 +87,9 @@ sub auth_client {
 # subroutine that handles parameters
 sub get_param{
 
-	my $cdir = "/var/systems/";
-	my $pass = "init-pass";
+        my $cdir = "/var/async-shell/systems/";
+        my $sdir = "/var/async-shell/ps-scripts/";
+        my $pass = "init-pass";
 	my $pass_file = $cdir . $pass;
 	my $param_out;
 
