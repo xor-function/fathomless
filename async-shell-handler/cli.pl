@@ -92,7 +92,7 @@ sub list_hosts {
 sub proc_cmds {
 
 	my $client = $_[0];
-	my $client_path = '/var/systems/' . $client;
+	my $client_path = '/var/async-shell/systems/' . $client;
 
 	my $command = $client_path . '/command';
 	my $stdout = $client_path . '/stdout';
