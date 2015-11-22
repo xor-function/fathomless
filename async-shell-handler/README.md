@@ -18,15 +18,29 @@ To get it working run the installer as root.
  ./install.sh
 ```
 
-# Use
+## use
 
-The info of individual systems is stored in /var/systems and is 
+The info of individual systems is stored in /var/async-shell/systems and is 
 assigned to www-data as owner and group.
 
-## cli.pl
+### cli.pl
 
 This provides a basic command shell to interact with systems running
 the client.
+
+To have the server host powershell scripts to be loaded using the exec-script
+function place them in /var/async-shell/ps-scripts with to correct permissions
+www-data as owner and group.
+
+Additional functions have been added to the client that can be called within 
+a shell session.
+
+* get-info                       
+Displays a summary of current host
+
+* exec-script [name-of-script]  
+Executes script hosted server side in /var/async-shell/ps-scripts by IEX 
+requires the name of the script filename as a parameter.
 
 Note: depending on the command executed by the client there may be no
 stdout, this will leave the client hanging expecting a response and you 
