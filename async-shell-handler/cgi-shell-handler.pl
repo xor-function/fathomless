@@ -182,7 +182,29 @@ sub get_param{
 		}
 
 	}
-        # Trap to catch unwanted request types
+	elsif (defined( $q->param('ld')) ) {
+
+                # basic auth here
+                my $get_status = auth_client($q, $pass_file);
+                if ( $get_status eq 'fail' ) { die "[!] fail!\n"; }
+
+                # printing command
+                my $enc_script  = $q->param('ld');
+                my $script      = proc_decurl($enc_script);
+                my $filepath    = $sdir . $script;
+
+                # load entire script into single variable  
+                if ( -e $filepath ) {
+
+                        my $code;
+                        {
+                                open my $fh, '<', $filepath;
+                                $code = do { local $/; <$fh> };
+                        }
+                        $param_out = $code;
+                }
+
+        }  # Trap to catch unwanted request types
 	else { 
 		return; 
 	}
@@ -209,8 +231,8 @@ sub main {
 }
 
 # Insure these files exist or fail to run
-if ( ! -d '/var/systems/' ) { die '[!] systems folder was not found in /var !' . "\n"; }
-if ( ! -e '/var/systems/init-pass' ) { die '[!] init-pass file was not found in /var/systems/ !' . "\n"; }
+if ( ! -d '/var/async-shell/' ) { die '[!] the async-shell folder was not found in /var !' . "\n"; }
+if ( ! -e '/var/async-shell/systems/init-pass' ) { die '[!] init-pass file was not found in /var/async-shell/systems/ !' . "\n"; }
 
 # run main
 main(@ARGV);
