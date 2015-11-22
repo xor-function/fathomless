@@ -8,7 +8,7 @@
 title() {
 
         echo "[*]===============================================================[*]"
-        echo "[*] async-shell-handler                             ver .01 GPLv3 [*]"
+        echo "[*] async-shell-handler                             ver .02 GPLv3 [*]"
         echo "[*]                                                               [*]"
         echo "[*] Installing...                                   xor-function  [*]"
         echo "[*]===============================================================[*]"
@@ -126,12 +126,12 @@ if [ -e /etc/lighttpd/lighttpd.conf ]; then
 	fi
 fi
 
-if [ -d /var/systems ]; then
-	echo "[!] systems folder detected, folder contains info about systems runing the client"
+if [ -d /var/async-shell ]; then
+	echo "[!] async-shell folder detected, folder contains info about systems runing the client"
 	echo "[ ] by proceeding this folder will be deleted"
 	echo "[ ] continue? (y/n)"
 	get_permission
-	rm -r /var/systems
+	rm -rf /var/async-shell
 fi
 
 get_aptpkg lighttpd
@@ -170,10 +170,15 @@ file_perm /var/www/$rname.pl
 file_perm /var/www/$rclient
 
 echo "[*] Generating random password for shell-handler."
-mkdir /var/systems
+mkdir -p /var/async-shell/systems
+mkdir /var/async-shell/ps-scripts
+
 pass=$(rstr_long)
-echo $pass > /var/systems/init-pass
-folder_perm /var/systems
+echo $pass > /var/async-shell/systems/init-pass
+
+folder_perm /var/async-shell
+folder_perm /var/async-shell/ps-scripts
+folder_perm /var/async-shell/systems
 
 service lighttpd restart
 
