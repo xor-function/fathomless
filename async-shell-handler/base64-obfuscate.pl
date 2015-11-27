@@ -2,13 +2,13 @@
 # 
 # base64 obfuscator
 #
-# Encodes a raw string into base64 then uses polyalphabetic 
+# Encodes a raw string into base64 then uses a polyalphabetic 
 # routine to shift only the alaphabetic characters using a 
 # random alpabetic key. The purpose behind this is to force 
-# manual decryption/cracking.
+# manual cracking to get the original base64 encoded data.
 #
-# xor-function, license GPLv3
-#
+# 				xor-function, license GPLv3
+
 
 use strict;
 use warnings;
