@@ -99,7 +99,7 @@ sub obfuscate_base64 {
         foreach my $ch (@strg_array) {
 
 		 if ( $ch =~ /[a-z,A-Z]/m )
-    {
+    		 {
 
 			my $uch = uc $ch; 
                         my $ival = $inv_alpha{$uch};
@@ -123,13 +123,13 @@ sub obfuscate_base64 {
 				
 			if ( $ch =~ /[a-z]/m ) 
 			     { my $lchar = lc $nchar; $obase64 .= $lchar; }  
-			else { my $uchar = uc $nchar; $obase64 .= $uchar; } 
+			else { my $uchar = uc $nchar; $obase64 .= $uchar; }
+			
+			$count++;
 
-  } else { $obase64 .= $ch; }
-
+  		} else { $obase64 .= $ch; }
 	} 
-
-	$count++;	
+	
 	return $obase64;
 
 } 
