@@ -100,9 +100,10 @@ function obfuscate-base64( $action, $key, $string ) {
 		        elseif ( $c -cmatch '[A-Z]' ) 
 			   { $cipher = $schar.ToLower(); $ncipher += [string]::join("", ($cipher)) } 
 
+			$count++
+
 		} else { $ncipher += [string]::join("", ($c)) }
 		
-		$count++
 	}
 
 	$scipher = [string]$ncipher
