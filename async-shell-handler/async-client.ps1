@@ -245,6 +245,8 @@ function gen-key {
         return $kstring
 }
 
+# Generate a PowerShell format base64 encoded command
+# place your command in strong quotes or read it from a file as a string
 function gen-enccmd {
 
         param($clrcmd)
@@ -252,7 +254,18 @@ function gen-enccmd {
         $bytescmd = [System.Text.Encoding]::Unicode.GetBytes($clrcmd.ToString())
         $enccmd = [Convert]::ToBase64String($bytescmd)
 
-        retrun $enccmd
+        return $enccmd
+}
+
+# decodes a PowerShell formatted encoded command
+function dec-enccmd {
+
+        param($enccmd)
+        
+        $cmdString = [System.Text.Encoding]::Unicode.getString([System.Convert]::Frombase64String($enccmd))
+
+        return $cmdString
+
 }
 
 # action = hide or clear
