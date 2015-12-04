@@ -38,16 +38,16 @@ a shell session.
 * get-info                       
 Displays a summary of current host
 
-* exec-script [name-of-script]  
+* exec-script "name-of-script"  
 Executes script hosted server side in /var/async-shell/ps-scripts by IEX 
 requires the name of the script filename as a parameter.
 
-* obfuscate [name of text file / script] 
+* obfuscate "name of text file / script"
 (shorcut method for use with text files)
 Uses a polyalphabetic obfuscation method on base64 strings writes obfuscated
 string to file and provides a de-obfuscation key.
 
-* de-obfuscate [(name of text file / script), (key)]
+* de-obfuscate "(name of text file / script), (key)"
 (shorcut method for use with text files)
 Performs the inverse of the obfuscation function requires the text file with the
 obfuscated base64 data and de-obfuscation key as parameters.
@@ -55,10 +55,10 @@ obfuscated base64 data and de-obfuscation key as parameters.
 * gen-key
 generates a random alphabetic string for use with the obfuscate-base64 function
 
-* obfuscate-base64 [(action:hide or clear ), (key: obfuscation or de-ofuscation), (base64-string)]
+* obfuscate-base64 "(action:hide or clear ), (key: obfuscation or de-ofuscation), (base64-string)"
 The function that contains the obfuscation engine, it works only with clear base64 data.
 
-* gen-enccmd [your command string]
+* gen-enccmd "your command string"
 Generates a PowerShell formatted encoded command. Insure to quote your command
 string.
 ```
