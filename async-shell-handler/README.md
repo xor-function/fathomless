@@ -43,13 +43,11 @@ Executes script hosted server side in /var/async-shell/ps-scripts by IEX
 requires the name of the script filename as a parameter.
 
 * obfuscate [name of text file / script] 
-
 (shorcut method for use with text files)
 Uses a polyalphabetic obfuscation method on base64 strings writes obfuscated
 string to file and provides a de-obfuscation key.
 
 * de-obfuscate [(name of text file / script), (key)]
-
 (shorcut method for use with text files)
 Performs the inverse of the obfuscation function requires the text file with the
 obfuscated base64 data and de-obfuscation key as parameters.
@@ -66,7 +64,7 @@ string.
 ```
 gen-enccmd "cmd /c ipconfig /all"
 ```
-
+### caveats
 Depending on your command structure and use of special characters you may need
 to encapsulate your command string in a variable before passing to this function.
 ```
