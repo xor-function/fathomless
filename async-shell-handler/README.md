@@ -42,6 +42,40 @@ Displays a summary of current host
 Executes script hosted server side in /var/async-shell/ps-scripts by IEX 
 requires the name of the script filename as a parameter.
 
+* obfuscate [name of text file / script] 
+
+(shorcut method for use with text files)
+Uses a polyalphabetic obfuscation method on base64 strings writes obfuscated
+string to file and provides a de-obfuscation key.
+
+* de-obfuscate [(name of text file / script), (key)]
+
+(shorcut method for use with text files)
+Performs the inverse of the obfuscation function requires the text file with the
+obfuscated base64 data and de-obfuscation key as parameters.
+
+* gen-key
+generates a random alphabetic string for use with the obfuscate-base64 function
+
+* obfuscate-base64 [(action:hide or clear ), (key: obfuscation or de-ofuscation), (base64-string)]
+The function that contains the obfuscation engine, it works only with clear base64 data.
+
+* gen-enccmd [your command string]
+Generates a PowerShell formatted encoded command. Insure to quote your command
+string.
+```
+gen-enccmd "cmd /c ipconfig /all"
+```
+
+Depending on your command structure and use of special characters you may need
+to encapsulate your command string in a variable before passing to this function.
+```
+$cmdstring = 'cmd /c ipconfig /all' ; gen-enccmd $cmdstring
+```
+
+* dec-enccmd [Your encoded command string ]
+Decodes the base64 string and displays the original string.
+
 Note: depending on the command executed by the client there may be no
 stdout, this will leave the client hanging expecting a response and you 
 will have to restart it to reset it.
@@ -56,7 +90,6 @@ If you feel this is a bit too unpredictable you will have to
 use echo and tail.
 
 ```
-
 null-pc www # ls -l /var/
 drwxr-xr-x  2 www-data www-data 4096 Sep 15 00:22 systems
 ```
