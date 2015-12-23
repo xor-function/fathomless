@@ -414,13 +414,13 @@ sub gen_code {
                 if ( $rspace == 0 ) {
 
                         print $fh "\n\n", 'set ' . $vbsShobj . ' = ' . 'CreateObject("Wscript.Shell")';
-                        print $fh "\n", $vbsShobj . '.run '. $rcmdvar . ',' . ' 0,' . ' true';
+                        print $fh "\n", $vbsShobj . '.run '. $rcmdvar . ',' . ' 0,' . ' false';
                 }
 
                 if ( $rspace == 1 ) {
 
                         print $fh "\n", 'set ' . $vbsShobj . ' = ' . 'CreateObject("Wscript.Shell")';
-                        print $fh "\n\n", $vbsShobj . '.run '. $rcmdvar . ',' . ' 0,' . ' true';
+                        print $fh "\n\n", $vbsShobj . '.run '. $rcmdvar . ',' . ' 0,' . ' false';
 
                 }
 
