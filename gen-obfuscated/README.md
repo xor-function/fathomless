@@ -16,6 +16,12 @@ Generated Output of an obfuscated command string:
 ![generated output](http://www.nightowlconsulting.com/pics/string-obfuscation-1.png)
 
 
+The hash value of the resulting code with the same command string will alter upon 
+each run do to randomization implemented.
+
+![generated hash](http://nightowlconsulting.com/pics/string-obfuscation-2.png)
+
+
 ### UPDATE
 Now has an interactive user prompt just run it from the terminal.
 
