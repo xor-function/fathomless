@@ -58,6 +58,15 @@ generates a random alphabetic string for use with the obfuscate-base64 function
 * obfuscate-base64 "(action:hide or clear ), (key: obfuscation or de-ofuscation), (base64-string)"
 The function that contains the obfuscation engine, it works only with clear base64 data.
 
+* byte-encode ( binary-to-obfuscate, key ) Performs byte-encoding prior to converting to 
+obfuscated base64 provide key de-obfuscation
+
+* byte-decode ( file-containing-obfu-base64, key ) performs the reverse of byte-encode 
+requires the de-obfuscation key.
+
+* askfor-creds 
+creates a dialog box prompting the user for credentials.
+
 * gen-enccmd "your command string"
 Generates a PowerShell formatted encoded command. Insure to quote your command
 string.
