@@ -321,7 +321,7 @@ function gen-enccmd {
 	$bytescmd = [System.Text.Encoding]::Unicode.GetBytes($clrcmd.ToString()) 
 	$enccmd = [Convert]::ToBase64String($bytescmd) 
 	
-	retrun $enccmd
+	return $enccmd
 }
 
 # decodes a powershell formatted encoded command
