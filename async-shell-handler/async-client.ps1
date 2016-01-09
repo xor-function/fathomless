@@ -140,9 +140,9 @@ function start-aclient {
 
 	function set-sysname {
 
-        	# register machine to server
+        	#[->] register machine to server
 
-               	# Some optional markers listed for reference...
+               	#[->] Some optional markers listed for reference...
                 # $biosversion = gwmi win32_bios | select -expand SMBIOSBIOSVersion
                 # $serial = gwmi win32_bios | select -expand SerialNumber
 
@@ -150,8 +150,8 @@ function start-aclient {
         	$mac = $rawmac -replace "\W", '-'
 
         	$name = $env:computername
-							    # Example date Feb 7 at 9:32:05 pm 
-		$regtime = get-date -uformat "%m%d%H%M%S"   # The time format is [month 02 | day 07 | hour 21 | minute 32 | second 05] [0207213205]
+							    #[->] Example date Feb 7 at 9:32:05 pm 
+		$regtime = get-date -uformat "%m%d%H%M%S"   #[->] The time format is [month 02 | day 07 | hour 21 | minute 32 | second 05] [0207213205]
        		$sysname = $name + "-" + $mac + "-" + $regtime
 
 		return $sysname
