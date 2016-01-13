@@ -23,8 +23,8 @@ function start-rsh
 {
 
 	#[->] Enter the ip address and port information here
-        $IPAddress = '192.168.43.150'
-        $Port = '443'
+        $IPAddress = '192.168.43.150' # [->] Change this example
+        $Port = '443' # [->] Change this example 
 
 
 
