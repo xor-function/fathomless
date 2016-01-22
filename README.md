@@ -7,7 +7,7 @@ The server is hosted on an lighttpd server using HTTPS with a self-signed certif
 
 The async client performs basic key fingerprint comparison for the self-signed cert and basic authentication to the C&C. These values are randomly generated upon installation. All requests and responses from the client are performed via HTTPS GET requests with url safe base64 encoded strings.
 
-The client initialy operates in memory so if it exits or the system reboots the process will be terminated and flushed from memory.
+The client initially operates in memory so if it exits or the system reboots the process will be terminated and flushed from memory.
 
 Limited persistence has been added via the shortcut-inject function avaliable in the async and tcp powershell clients.
 
