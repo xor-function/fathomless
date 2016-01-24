@@ -11,7 +11,7 @@ directly relies upon the use of SSL/TLS.
 
 # Install
 
-Developed for use one a regular Ubuntu 14.04 LTS server distro.
+Developed for use on a regular Ubuntu 14.04 LTS server distro.
 To get it working run the installer as root.
 
 ```
