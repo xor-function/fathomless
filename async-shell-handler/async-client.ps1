@@ -129,14 +129,15 @@ function start-aclient {
         	return $decstring
 	}
 
-	function gen-key {
+        function gen-key {
 
-        	$rs = New-Object System.Random
-		1..70 | % { $obfukey += [Char]$rs.next(97,122) } 
-        	$kstring = [string]::join("", ($obfukey))
-        	return $kstring
+                $charArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray()
+                1..70 | % { $rchr += $charArray | get-random }
+                $randkey = [string]::join("", ($rchr))
 
-	}
+                return $randkey
+
+        }
 
 	function set-sysname {
 
