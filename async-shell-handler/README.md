@@ -35,7 +35,7 @@ www-data as owner and group.
 Additional functions have been added to the client that can be called within 
 a shell session.
 
-* show-help 
+* show-help                                              
 shows the following function info from a shell session. 
 
 * get-info                       
