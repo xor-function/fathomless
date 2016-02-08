@@ -369,10 +369,10 @@ function shortcut-inject {
 	
 		#[->] Passing .lnk full path as variable
 		$shortcutFullname = (gci $shortcut).Fullname
-		$location = (gci $shortcut).DirectoryName
-		$lnkName = (gci $shortcut).Name
-		$newlnkName = 'New ' + $lnkName
-		$newshortcutFullname = $location + '\' + $newlnkName
+		# $location = (gci $shortcut).DirectoryName
+		# $lnkName = (gci $shortcut).Name
+		# $newlnkName = 'New ' + $lnkName
+		# $newshortcutFullname = $location + '\' + $newlnkName
 	
 		#[->] extracting original properties from selected icon
 		$wsh = New-Object -COM WScript.Shell
