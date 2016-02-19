@@ -34,7 +34,7 @@ function base64string-encode {
 	param($string)
 
 	# Use this to encode strings to base64 format
-	$encoded = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.getbytes($string))
+	$encstring = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.getbytes($string))
 
 	return $encstring
 }
