@@ -44,15 +44,12 @@ use MIME::Base64;
 # Be Creative...
 #################################################################################################################
 
-#################################################################################################################
-# The options are included inside due to particularities of escaping powershell code passed as an 
-# Prob best to bypass bash and have Perl directly accept input....
-
 #######[ Script Type ]#############
 #
 #  1 for vbscript
 #  2 for vba macro ---> EXPERIMENTAL large macros can be generated affects still unknown...
 #  3 for hta script
+#  4 for sct files ---> IN Development
 
 sub set_type { 
 
