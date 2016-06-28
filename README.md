@@ -28,6 +28,7 @@ Currently supported methods.
 * vbscript 
 * vba macros
 * hta
+* jscript vba macro execution
 
 ##### target environment for use
 
