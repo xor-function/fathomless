@@ -64,7 +64,7 @@ sub set_type {
 	print "[1]-> vbscript\n";
 	print "[2]-> vba macro  [EXPERIMENTAL! Macros with a large code size may fail.]\n";
 	print "[3]-> hta [vbscript]\n";
-	print "[4]-> jscript vba macro execution [ REQUIREMENT MS Offices must be installed.]\n\n";
+	print "[4]-> jscript vba macro execution [ REQUIREMENT MS Office must be installed.]\n\n";
 
 	while (1) {
 		print "[*] Select the option number for the type of code you wish to generate.\n";
