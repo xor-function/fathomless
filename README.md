@@ -9,7 +9,7 @@ The async client performs basic key fingerprint comparison for the self-signed c
 
 The client initially operates in memory so if it exits or the system reboots the process will be terminated and flushed from memory.
 
-Limited persistence has been added via the shortcut-inject function avaliable in the async and tcp powershell clients.
+Persistence has been added via the shortcut-inject and simple-persistence functions avaliable in the async and tcp powershell clients.
 
 #### gen-obfuscated
 
