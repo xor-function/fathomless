@@ -2,7 +2,6 @@
 
 A collection of tools personalized for red teams but also useful for pen testers.
 
-Tools:
 * Modified linux disto that is effective on Win 7 partitions and pre UEFI Systems.
 * Custom HTTPS capable C2 server written in Perl and powershell reverse shells the "async-client and variants".
 * Simple Windows script obfuscator for AV evasion.
