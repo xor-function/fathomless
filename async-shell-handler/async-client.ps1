@@ -572,6 +572,17 @@ function persistent-stager($scriptUrl) {
 
 }
 
+#[->] function for variable name randomization
+function rand-str {
+
+        $rint = get-random -max 10 -min 3
+        $charArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray()
+        1..$rint | % { $rchr += $charArray | get-random }
+        $randstr = [string]::join("", ($rchr))
+
+        return $randstr
+}
+
 # [->] vbs code generator, the obfuscation engine core algo
 function obfuscate-cmdstring($cmdstring, $sType, $vbaType) {
 
