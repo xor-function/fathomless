@@ -67,7 +67,7 @@ your command string.
 	
    example: gen-enccmd "cmd /c ipconfig /all"
 
-### dec-enccmd [Your encoded command string 
+### dec-enccmd "Your encoded command string" 
 Decodes the base64 string and displays the original string.
 
 
