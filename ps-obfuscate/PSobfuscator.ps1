@@ -12,7 +12,7 @@ Not all of the functions from gen-obfuscated have been moved over and some
 of this stuff is original and was never on the perl script to begin with.
 
 The code here has been removed from the implants for stand alone use.
-And are tailored for the idea of "user initated" latteral movement inside 
+And are tailored for the idea of "user initiated" lateral movement inside 
 a network. Which should help remove the need of exploits.
 
 
