@@ -42,6 +42,12 @@ gen-obfuscated and the async-client mainly use native Windows interpreted langua
 
 Obviously there is a social engineering aspect to this that is required, this I leave to you (maybe not).
 
+#### ps-obfuscator
+
+A variant of gen-obfuscated ported to powershell. The obfuscation engine is ported but the only supported methods currently are vbscript, vba macros and lnk files along with other obfuscation techniques.
+
+made to run from a windows systems to generate payloads without needing to use the powershell clients/implants. 
+
 #### boot2own
 
 A toolkit that generates a live OS from a crunchbang iso. When a workstation is booted to this live environment it's hard drive is mounted and the NTLM hash of the local admin (RID 500) is extracted. The admin hash is then leveraged 
