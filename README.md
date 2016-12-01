@@ -6,7 +6,7 @@ A collection of tools personalized for red teams but also useful for pen testers
 * Custom HTTPS capable C2 server written in Perl and powershell reverse shells the "async-client and variants".
 * Simple Windows script obfuscator for AV evasion.
 
-# async-shell-handler
+## async-shell-handler
 asynchronous multi-shell handler
 
 Includes a server side cgi application and a powershell client.
@@ -17,7 +17,7 @@ cgi to enter shell commands to be executed by clients asynchronously.
 The information is exchanged in an encoded format, the secure nature
 directly relies upon the use of SSL/TLS.
 
-# Install
+## Install
 
 Developed for use on a regular Ubuntu 14.04 LTS server distro.
 To get it working run the installer as root.
@@ -153,7 +153,7 @@ Created to be used along with gen-obfuscated
 For more info http://nightowlconsulting.com/asynchronous-shell-handler/
 
 
-# b64 tcp client 
+## b64 tcp client 
 
 Provides a variant of the tcp powershell client that encodes the TCP traffic with custom base64 
 encoding. This should help evade some IDS egress detection methods without having to resort 
@@ -180,7 +180,7 @@ Edit the b64-tcp-client.ps1 script, see below
 Get the client to execute on target system somehow, "gen-obfuscated" and wait for your shell.
 
 
-# gen-obfuscated
+## gen-obfuscated
 
 ### Generate Obfuscated Code
 This is a simple perl program that generates obfuscated vbs/vba code
@@ -289,7 +289,7 @@ gen-obfuscated and the async-client mainly use native Windows interpreted langua
 Obviously there is a social engineering aspect to this that is required, this I leave to you (maybe not).
 
 
-# PSobfuscator
+## PSobfuscator
 
 The result of porting some functionality from gen-obfuscated into the powershell clients.
 Made to run from a windows systems to generate payloads without needing to use the 
@@ -383,7 +383,7 @@ PS C:\>	. .\PSobfuscator.ps1
 
 
 
-# The boot2own toolkit
+## The boot2own toolkit
 
 B2O is a toolkit that generates a live OS from a crunchbang 
 iso. When a workstation is booted to this live environment 
@@ -407,7 +407,7 @@ Confirmed working on Windows 7 only.
 * Add additonal payloads
 * Add UEFI support (meaning there is no current UEFI support)
 
-## Demo
+### Demo
 The following link has a demo iso that was generated with this kit.
 Don't take my word for it and test it in a Windows VM that is apart
 of a virtualized test domain.
@@ -416,19 +416,19 @@ of a virtualized test domain.
 
 create an issue through github if you have any problems.
 
-## Video
+### Video
 Watch it in HD to see the details.
 
 [![video hosted on youtube here](http://img.youtube.com/vi/vUvku_CwKT0/hqdefault.jpg)](https://www.youtube.com/embed/vUvku_CwKT0?autoplay=1&vq=hd720)
 
-## Build Scripts
+### Build Scripts
 Run these scripts inside the boot2own/ folder to prevent
 any odd issue from appearing.
 * b2o-compile.sh - compiles a patched winexe binary
 * b2o-isogen.sh  - generates the live environment from a CrunchBang iso
 * b2o-pxe.sh     - sets up a pxe server using the newly generated iso
 
-## Compile winexe
+### Compile winexe
 Insure that you are using a x86 Ubuntu 12.04 / Crunchbang computer for 
 compiling winexe for the x86 LiveCD. 
 
@@ -444,7 +444,7 @@ boot2own/live-files/boot-2-own/pwinexe
 
 Note: a x64 binary will not work.
 
-## Generate iso image
+### Generate iso image
 To generate a boot2own liveCD for yourself you will need to have 
 a copy of a Crunchbang iso. The build scripts have been sucessfully 
 tested on image crunchbang-11-20130506-i686.iso  
@@ -476,7 +476,7 @@ Default network settings in b2o-pxe.sh
 eth0    10.0.0.1
 netmask 255.255.255.0
 
-## Live Environment Options
+### Live Environment Options
 
 Tested on hard drives with Windows 7 installed. 
 * If the hard drive is encrypted B2O will fail. 
@@ -579,7 +579,7 @@ Shows Credits
 ### [7] Shut Down Live session
 Self explanitory
 
-## exfil
+### exfil
 
 For the payload options [ 2 - 5 ]
 the output/result of each successful execution run is saved in a file
