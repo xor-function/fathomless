@@ -3,7 +3,7 @@
 PS Obfuscator
 
 originally started out as gen-obfuscated which was written in perl. I wanted to 
-rewrite that perl script from scatch but instead kinda did it in powershell.
+rewrite that perl script from scratch but instead kinda did it in powershell.
 
 This was due to having the implants being able to generate obfuscated payloads
 on there own. 
