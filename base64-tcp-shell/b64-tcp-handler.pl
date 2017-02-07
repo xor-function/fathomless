@@ -64,15 +64,13 @@ sub enc_desub {
 # encodes a base64 string with subtituded characters. 
 sub enc_sub {
 
-        my $raw_string = $_[0];
+        my $enc_string = $_[0];
 
-        $raw_string =~ tr/=/!/;
-        $raw_string =~ tr/\//_/;
-        $raw_string =~ tr/+/-/;
+        $enc_string =~ tr/=/!/;
+        $enc_string =~ tr/\//_/;
+        $enc_string =~ tr/+/-/;
 
-        my $dec_string = decode_base64($raw_string);
-
-        return $dec_string;
+	return $sub_enc_string;
 
 }
 
