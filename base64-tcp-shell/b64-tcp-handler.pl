@@ -70,7 +70,7 @@ sub enc_sub {
         $enc_string =~ tr/\//_/;
         $enc_string =~ tr/+/-/;
 
-	return $sub_enc_string;
+	return $enc_string;
 
 }
 
