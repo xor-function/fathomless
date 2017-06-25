@@ -7,7 +7,7 @@
 # parsing by client application, Use with https to 
 # help prevent request tampering.
 # 				   xor-function 
-# license GPLv3 
+# license MIT
 
 use CGI;
 use strict;
