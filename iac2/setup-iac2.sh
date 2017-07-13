@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# setup uptime monitor server
+# setup iaa monitor server
 #
 
 title() {
