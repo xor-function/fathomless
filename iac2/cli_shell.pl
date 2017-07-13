@@ -303,15 +303,13 @@ sub main {
 		}
 
 		print "[!] Status of avaliable hosts.\n\n";
+		
 		my @sys_hosts = gen_hosts();
-
 		parse_status();
-
 		my $client = list_hosts(@sys_hosts);
 
-		print $client;
-
-		while (1) { 
+		while (1) 
+		{ 
 			my $choice = proc_cmds($client);
 			if ( $choice eq 'no' ) { last; } 
 		}
