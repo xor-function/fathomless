@@ -121,7 +121,7 @@ sub get_param{
 			print $fh3 "\n";
 			close $fh3;
 
-			$param_out = $new_host . has registered;
+			$param_out = $new_host . 'has registered';
 	
 		} else { 
 			$param_out = 'hostname already present'; 
@@ -147,7 +147,7 @@ sub get_param{
 		if ( -e $full_path ) 
 		{ 
 
-          	open(my $fh, '+>>', $filepath);
+          		open(my $fh, '+>>', $filepath);
 				print $fh $data;
 			close $fh;
 
