@@ -171,6 +171,7 @@ mkdir -p /var/iac2/systems
 
 pass=$(rstr_long)
 echo $pass > /var/iac2/init-pass
+file_perm /var/iac2/init-pass
 
 folder_perm /var/iac2
 folder_perm /var/iac2/systems
