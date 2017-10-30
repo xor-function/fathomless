@@ -229,7 +229,7 @@ sub get_param{
 sub webpage {
 
 	print "Content-type:text/html\r\n\r\n";
-	print '<html><title>uptime monitor</title>';
+	print '<html><title>default page</title>';
 
 	my $css = '<style>
 	body {
