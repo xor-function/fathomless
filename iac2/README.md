@@ -7,7 +7,7 @@ use this to filter targets that are any worth.
 server side: 
 
 iaa-monitor.pl -> perl cgi app
-cli_shell.pl   -> interactve shell in perl 
+cli_shell.pl   -> interactive shell in perl 
 
 This was made to work with Debian/Ubuntu server distro (tested in Debian 8). After a 
 clean install just run setup-iac2.sh to setup. 
@@ -15,7 +15,7 @@ clean install just run setup-iac2.sh to setup.
 Once setup run the cli_shell.pl to interact with any systems that have executed
 client code on them.
 
-It's light weight, has simple clients and uses a lighttpd server, no data bases are 
+It's light weight, has simple clients and uses a lighttpd server, no databases are 
 required so you can set it up and tear it down without difficulty.
 
 These are the two client's:
