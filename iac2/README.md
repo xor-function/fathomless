@@ -26,8 +26,10 @@ initial-access-agent.py  -> client in python
 You can compile the powershell using ps2exe to a binary if you wish but try to run it
 in memory.
 
-the python version is a work in progress, you should be able to complie using pyinstaller.
-warning need to add OS detection so that the wmi c-types don't get used if windows is not
+the python version is a work in progress, you should be able to complie using pyinstaller,
+py2exe or py2app etc.
+
+Warning need to add OS detection so that the wmi c-types don't get used if windows is not
 detected.
 
 ```
