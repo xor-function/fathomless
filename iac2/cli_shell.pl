@@ -223,7 +223,7 @@ sub proc_cmds {
 
 	} # end while
 
-	my $trigger = '$' . 'runcode' . ';';
+        my $trigger = 'Time /T' . ' & ';
 
 	# using a backtick so it can be interpreted correctly in powershell
 	open (my $fh, '+>', "$command" );
