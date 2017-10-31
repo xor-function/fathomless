@@ -1,7 +1,7 @@
 # IAC2
 
 ```
-Short for inital acces c2 server, the idea behind this is the first c2 to make contact.
+Short for inital access c2 server, the idea behind this is the first c2 to make contact.
 use this to filter targets that are any worth.
 
 server side: 
