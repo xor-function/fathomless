@@ -225,7 +225,7 @@ sub proc_cmds {
 
         } # end while
 
-        my $trigger = 'echo [>][Command Output]' . ' & ';
+        my $trigger = 'echo [!]' . ' & ';
 
         # using a backtick so it can be interpreted correctly in powershell
         open (my $fh, '+>', "$command" );
