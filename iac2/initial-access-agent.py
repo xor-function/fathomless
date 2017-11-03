@@ -164,4 +164,4 @@ while True:
 		core()
 	except:
 		# print "caught exception executing core function, going to sleep..."
-		time.sleep(random.randin(280,500))
+		time.sleep(random.randint(280,500))
