@@ -3,7 +3,7 @@
 A collection of tools personalized for red teams but also useful for pen testers.
 
 * Modified linux distro that is effective on Win 7 partitions and pre UEFI Systems.
-* Custom HTTPS capable C2 server written in Perl and powershell/Python reverse shells clients.
+* Custom HTTPS capable C2 server uses a cgi written in Perl and reverse shell clients written in Powershell / Python.
 * Simple Windows script obfuscator for AV evasion, uses a polyalphabetic cipher to alter b64 encoding.
 
 
