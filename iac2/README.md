@@ -29,7 +29,7 @@ in memory.
 the python version is a work in progress, you should be able to complie using pyinstaller,
 py2exe or py2app etc.
 
-Warning need to add OS detection so that the wmi c-types don't get used if windows is not
-detected.
+There is basic OS detection and it will be show through the cli_shell.pl script. 
+Use caution on your command input since you have direct shell access via subprocess.Popen()
 
 ```
