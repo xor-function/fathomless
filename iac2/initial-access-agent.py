@@ -40,7 +40,7 @@ def get_sysinfo():
 		userid = os.environ['USERNAME']
 		LogOnServer = os.environ['LOGONSERVER']
 		
-	if query == 'Mac':
+	if query == 'Darwin':
 		OpSys  = platform.platform()
 	
 	machineName = platform.node()
