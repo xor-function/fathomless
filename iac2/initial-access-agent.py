@@ -29,28 +29,37 @@ def get_time_stamp():
 
 def get_sysinfo():
 
-	query = platform.system()
+        try:
+                query = platform.system()
+                machineName = platform.node()
+                UUID = uuid.getnode()
+                userid = os.environ['USERNAME']
+                updateTime = get_time_stamp()
 
-	if query == 'Linux':
-		Opsys  = platform.uname()
-		
-	if query == 'Windows':
-		OpSys  = platform.uname() 
-		domain = os.environ['USERDOMAIN']
-		userid = os.environ['USERNAME']
-		LogOnServer = os.environ['LOGONSERVER']
-		
-	if query == 'Darwin':
-		OpSys  = platform.platform()
+                if query == 'Linux':
+                        OpSys  = platform.platform()
+
+                if query == 'Windows':
+                        OpSys  = platform.platform()
+                        domain = os.environ['USERDOMAIN']
+                        LogOnServer = os.environ['LOGONSERVER']
+
+                if query == 'Darwin':
+                        OpSys  = platform.platform()
+
+                status = updateTime + '|' + userid + '|' + machineName + '|' + str(UUID) + '|' + OpSys
+                if query == 'Windows':
+                        status = status + '|' + domain + '|' + LogOnServer
+
+                status = status + '\n'
+                return status
 	
-	machineName = platform.node()
-	OpSys = platform.platform()
-	UUID = uuid.getnode()
-	updateTime = get_time_stamp()
-	
-	p = "|"
-	telemetry = updateTime + p + domain + p + userid + p + LogOnServer + p + machineName + p + str(UUID) + p + OpSys
-	return telemetry
+        except:
+		
+                msg = "[!] Failed to get info"
+                # print msg
+                return msg
+
 
 	
 def custom_b64_urlsafe_enc(b64str):
