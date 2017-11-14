@@ -11,7 +11,8 @@ import time
 import random
 import base64
 import datetime
-import httplib2
+#import httplib2
+import requests
 import platform
 import subprocess
 
@@ -94,8 +95,13 @@ def b64decstr(encstr):
 	
 def web_request(url):
 
-	h = httplib2.Http(".cache", disable_ssl_certificate_validation=True)
-	resp, content = h.request(url, headers={'user-agent': agent })
+	#h = httplib2.Http(".cache", disable_ssl_certificate_validation=True)
+	#resp, content = h.request(url, headers={'user-agent': agent })
+	
+	# trying out requests
+        headers = {'user-agent': agent}
+        resp = requests.get(url, verify=False, headers=headers)
+        string = resp.content.strip()
 
 	# code block for debuging
 	#print "============================================================="
@@ -103,8 +109,9 @@ def web_request(url):
 	#print "============================================================="
 	#print resp
 	
-	return content
+	# return content
 
+	return string 
 
 def exec_shell_cmd(cmmd):
 
