@@ -189,7 +189,7 @@ Mode                LastWriteTime     Length Name
 ```
 Created to be used along with gen-obfuscated
 
-For more info http://nightowlconsulting.com/asynchronous-shell-handler/
+For more info http://fathomlessproject.com/asynchronous-shell-handler/
 
 
 ## b64 tcp client 
@@ -234,13 +234,13 @@ that get's you a shell should work.
 
 Generated Output of an obfuscated command string:
 
-![generated output](http://www.nightowlconsulting.com/pics/string-obfuscation-1.png)
+![generated output](http://fathomlessproject.com/pics/string-obfuscation-1.png)
 
 
 The hash value of the resulting code with the same command string will alter upon 
 each run.
 
-![generated hash](http://nightowlconsulting.com/pics/string-obfuscation-2.png)
+![generated hash](http://fathomlessproject.com/pics/string-obfuscation-2.png)
 
 
 ### UPDATE
