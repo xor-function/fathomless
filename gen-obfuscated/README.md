@@ -13,13 +13,13 @@ that get's you a shell should work.
 
 Generated Output of an obfuscated command string:
 
-![generated output](http://www.nightowlconsulting.com/pics/string-obfuscation-1.png)
+![generated output](http://www.fathomlessproject.com/pics/string-obfuscation-1.png)
 
 
 The hash value of the resulting code with the same command string will alter upon 
 each run.
 
-![generated hash](http://nightowlconsulting.com/pics/string-obfuscation-2.png)
+![generated hash](http://www.fathomlessproject.com/pics/string-obfuscation-2.png)
 
 
 ### UPDATE
