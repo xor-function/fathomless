@@ -1,8 +1,8 @@
 # ps12bat
 Powershell script to batch script
 
-This will encode and embed as ps1 script in a batch script using 
-base64 encoding.
+This will encode and embed the ps1 script selected in a batch script 
+using base64 encoding.
 
 upon execution on target system it will extract the base64 encoded 
 script to a base64 encoded file, then it will create a userland registry 
