@@ -220,7 +220,7 @@ function genenc-script {
 	[int]$loopccnt = '0'
 	
 	foreach ($char in $charArray)
-    {
+	{
 		$loopccnt++;$lineccnt++;$loop++	
 		if ( [int]$lineccnt -eq '1' ) { $cmdfile += 'echo | set /p="' + $char
 		} else {$cmdfile += $char }
